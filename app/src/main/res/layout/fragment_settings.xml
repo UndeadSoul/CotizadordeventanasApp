@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/body_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="30dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="linea 20" />
+
+                        <!--Perfiles-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borde_datos"
+                            android:padding="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="perfiles" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/rs_tv_rielsup"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="riel superior" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/rs_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/rs_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/ri_tv_rielinf"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="riel inferior" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/ri_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/ri_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/jm_tv_jamba"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Jamba" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/jm_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/jm_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/ca_tv_cabezal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cabezal" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/ca_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/ca_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/zo_tv_zocalo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Zocalo" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/zo_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/zo_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tp_tv_traslapo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Traslapo" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tp_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/tp_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:padding="12dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/bte_tv_batiente"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Batiente" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/bte_tv_kgm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="kg/m" />
+
+                                    <EditText
+                                        android:id="@+id/bte_et_kgm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Color Perfiles-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borde_datos"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_color_perfil"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Color perfiles" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/color_tv_blanco"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Linea Color Blanco" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/color_tv_blanco_pc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio Completo" />
+
+                                    <EditText
+                                        android:id="@+id/color_et_blanco_pc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/color_tv_bronce"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Linea Color Bronce" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/color_tv_bronce_pc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio Completo" />
+
+                                    <EditText
+                                        android:id="@+id/color_et_bronce_pc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/color_tv_madera"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Linea Color Madera" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/color_tv_madera_pc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio Completo" />
+
+                                    <EditText
+                                        android:id="@+id/color_et_madera_pc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/color_tv_mate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Linea Color Mate" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/color_tv_mate_pc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio Completo" />
+
+                                    <EditText
+                                        android:id="@+id/color_et_mate_pc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/color_tv_titaneo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Linea Color titaneo" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/color_tv_titaneo_pc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio Completo" />
+
+                                    <EditText
+                                        android:id="@+id/color_et_titaneo_pc"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Tipo vidrio-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borde_datos"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_tipo_vidrio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tipo de Vidrio" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_m2plancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="m2 Plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_m2plancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_bronce4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Bronce 4mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_bronce4_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_bronce4_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_bronce5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Bronce 5mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_bronce5_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_bronce5_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_inc4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Incoloro 4mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_inc4_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_inc4_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_inc5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Incoloro 5mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_inc5_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_inc5_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_solar4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Solarcool 4mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_solar4_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_solar4_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/vidrio_tv_solar5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Solarcool 5mm" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/vidrio_tv_solar5_precioplancha"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio plancha" />
+
+                                    <EditText
+                                        android:id="@+id/vidrio_et_solar5_precioplancha"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Otros costos-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borde_datos"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tv_otros_costos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Otros Costos" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_felpa5x5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Felpa 5x5" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_felpa5x5_mrollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Metros rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_felpa5x5_mrollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_felpa5x5_preciorollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_felpa5x5_preciorollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_burlete302"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Burlete 302" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_burlete302_mrollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Metros rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_burlete302_mrollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_burlete302_preciorollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_burlete302_preciorollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_burlete506"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Burlete 506" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_burlete506_mrollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Metros rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_burlete506_mrollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_burlete506_preciorollo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio rollo" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_burlete506_preciorollo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_pestillos20"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paquete pestillos max3" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_pestillos20_cantpack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cantidad/paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_pestillos20_cantpack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_pestillos20_preciopack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_pestillos20_preciopack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_caracol20"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paquete caracol l20" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_caracol20_cantpack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cantidad/paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_caracol20_cantpack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_caracol20_preciopack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_caracol20_preciopack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_rod20"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paquete rodamientos l20" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_rod20_cantpack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cantidad/paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_rod20_cantpack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_rod20_preciopack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_rod20_preciopack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_tornillos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paquete tornillos" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_tornillos_cantpack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cantidad/paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_tornillos_cantpack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_tornillos_preciopack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_tornillos_preciopack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_silicona"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paquete silicona" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_silicona_cantpack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cantidad/paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_silicona_cantpack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_silicona_preciopack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Precio paquete" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_silicona_preciopack"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/borde_datos"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_flete"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Flete" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/otros_tv_flete_costokm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Costo/km" />
+
+                                    <EditText
+                                        android:id="@+id/otros_et_flete_costokm"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="number|numberDecimal" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--Otros valores-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/borde_datos"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_otros_valores"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Otros Valores" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/borde_datos"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/otros_tv_preciomercado"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Precio m2 mercado" />
+
+                                <EditText
+                                    android:id="@+id/otros_et_preciomercado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="number" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                        <Button
+                            android:id="@+id/bt_save"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="20dp"
+                            android:text="@string/menu_settings_bt_save"
+                            android:textAlignment="center"
+                            app:cornerRadius="20dp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

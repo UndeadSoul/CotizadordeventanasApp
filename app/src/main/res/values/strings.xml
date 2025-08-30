@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Cotizador de Ventanas</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Aluminios Las Vegas</string>
+    <string name="nav_header_subtitle">Las vegas de Yumbel km.2</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Inicio</string>
+    <string name="menu_quote">Cotización</string>
+    <string name="menu_settings">Configuración</string>
+
+    <!--Menu home-->
+    <string name="menu_home_btn_quote">Iniciar cotización</string>
+    <string name="menu_home_btn_settings">Configuración</string>
+
+    <!--Menu quote-->
+    <string name="menu_quote_tv_instructions">Ingrese las dimensiones de la ventana:</string>
+    <string name="menu_quote_et_ancho">Ancho</string>
+    <string name="menu_quote_et_alto">Alto</string>
+    <string name="menu_quote_bt_continue">Continuar</string>
+    
+    <!--Menu linea 20-->
+    <string name="menu_l20">Linea 20</string>
+    <string name="menu_l20_title">Cotización Linea 20</string>
+    <string name="menu_l20_status">Calculo de precios de la linea 20 aún no está implementado, contactese con el desarrollador</string>
+    <string name="menu_l20_selectColor">Color de aluminio:</string>
+    <string-array name="Color">
+        <item>Blanco</item>
+        <item>Bronce (Negro)</item>
+        <item>Madera</item>
+        <item>Mate (Aluminio)</item>
+        <item>Titaneo</item>
+    </string-array>
+    <string name="menu_l20_selectCrystal">Tipo de vidrio:</string>
+    <string-array name="Crystal">
+        <item>Incoloro (4mm)</item>
+        <item>Incoloro (5mm)</item>
+        <item>Bronce (4mm)</item>
+        <item>Bronce (5mm)</item>
+        <item>Solarcool (4mm)</item>
+        <item>Solarcool (5mm)</item>
+    </string-array>
+    <string name="menu_l20_others">Otros:</string>
+    <string name="menu_l20_cb_installation">Instalación</string>
+    <string name="menu_l20_cb_freight">Flete</string>
+    <string name="menu_l20_tv_distance">Distancia (km): </string>
+    <string name="menu_l20_bt_calc">Calcular</string>
+    <string name="menu_l20_tv_result">Resultado: </string>
+
+    <!--Menu linea 25-->
+    <string name="menu_l25">Linea 25</string>
+    <string name="menu_l25_title">Cotización Linea 25</string>
+    <string name="menu_l25_status">Calculo de precios de la linea 25 aún no está implementado, contactese con el desarrollador</string>
+
+    <!--Menu settings -->
+    <string name="menu_settings_bt_save">Guardar</string>
+
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.betaaplication.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_quoteFragment"
+            app:destination="@id/nav_quote"/>
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/nav_settings"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_quote"
+        android:name="com.example.betaaplication.ui.quote.QuoteFragment"
+        android:label="@string/menu_quote"
+        tools:layout="@layout/fragment_quote">
+        <action
+            android:id="@+id/action_quoteFragment_to_newFragment20"
+            app:destination="@id/l20" />
+        <action
+            android:id="@+id/action_quoteFragment_to_newFragment25"
+            app:destination="@id/l25" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.betaaplication.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/l20"
+        android:name="com.example.betaaplication.ui.l20.L20Fragment"
+        android:label="@string/menu_l20"
+        tools:layout="@layout/fragment_l20" />
+
+    <fragment
+        android:id="@+id/l25"
+        android:name="com.example.betaaplication.ui.l25.L25Fragment"
+        android:label="@string/menu_l25"
+        tools:layout="@layout/fragment_l25" />
+
+</navigation>

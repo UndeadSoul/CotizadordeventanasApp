@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Colores principales -->
+        <!--toolbar/selected item-->
+    <color name="colorPrimary">#b5b5b5</color>
+        <!--notifications-->
+    <color name="colorPrimaryVariant">#000000</color>
+        <!--text color on buttons-->
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+
+    <!-- Colores secundarios -->
+        <!--floating action button-->
+    <color name="colorSecondary">#4A90E2</color>
+    <color name="colorSecondaryVariant">#00f011</color>
+        <!--floating button icon-->
+    <color name="colorOnSecondary">#FFFFFF</color>
+
+    <!-- Colores de fondo y texto -->
+    <color name="colorBackground">#00f011</color>
+    <color name="colorTextPrimary">#303030</color>
+    <color name="colorTextSecondary">#00f011</color>
+
+    <!-- Colores de estado -->
+    <color name="colorSuccess">#27AE60</color>
+    <color name="colorWarning">#F2994A</color>
+    <color name="colorError">#E74C3C</color>
+</resources>
