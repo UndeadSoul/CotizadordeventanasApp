@@ -13,6 +13,14 @@
             android:icon="@drawable/baseline_assignment_24"
             android:title="@string/menu_quote" />
         <item
+            android:id="@+id/nav_projects"
+            android:icon="@drawable/baseline_folder_24"
+            android:title="@string/menu_project" />
+        <item
+            android:id="@+id/nav_clients"
+            android:icon="@drawable/baseline_person_24"
+            android:title="@string/menu_clients" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings"
             android:title="@string/menu_settings" />
