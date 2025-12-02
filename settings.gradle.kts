@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "betaAplication"
+rootProject.name = "Cotizador de Ventanas App"
 include(":app")
- 
