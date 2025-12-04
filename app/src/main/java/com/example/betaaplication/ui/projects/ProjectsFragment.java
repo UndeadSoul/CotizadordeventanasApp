@@ -1,38 +1,58 @@
 package com.example.betaaplication.ui.projects;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.betaaplication.ProjectWithClientName;
 import com.example.betaaplication.R;
-import com.example.betaaplication.databinding.FragmentProjectsBinding;
-import com.example.betaaplication.databinding.FragmentSettingsBinding;
 
-public class ProjectsFragment extends Fragment {
+public class ProjectsFragment extends Fragment implements ProjectsAdapter.OnProjectClickListener {
 
-    private FragmentProjectsBinding binding;
+    private ProjectViewModel projectViewModel;
+    private ProjectsAdapter projectsAdapter;
 
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentProjectsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        View root = inflater.inflate(R.layout.fragment_projects, container, false);
+
+        // Setup RecyclerView
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view_projects);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        projectsAdapter = new ProjectsAdapter(this);
+        recyclerView.setAdapter(projectsAdapter);
+
+        // Setup ViewModel and observe LiveData
+        projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
+        projectViewModel.getAllProjectsWithClientNames().observe(getViewLifecycleOwner(), projects -> {
+            // Update the cached copy of the projects in the adapter.
+            projectsAdapter.setProjects(projects);
+        });
+
+        // Handle the add button click to navigate to the new project screen
+        root.findViewById(R.id.bt_projectnew).setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_projects_to_new_project);
+        });
 
         return root;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onProjectClick(int projectId) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("projectId", projectId);
+        Navigation.findNavController(requireView()).navigate(R.id.action_projects_to_project_data, bundle);
     }
-
 }

@@ -49,13 +49,62 @@
         android:id="@+id/nav_projects"
         android:name="com.example.betaaplication.ui.projects.ProjectsFragment"
         android:label="@string/menu_project"
-        tools:layout="@layout/fragment_projects" />
+        tools:layout="@layout/fragment_projects">
+        <action
+            android:id="@+id/action_projects_to_new_project"
+            app:destination="@id/nav_project_new" />
+        <action
+            android:id="@+id/action_projects_to_project_data"
+            app:destination="@id/nav_project_data" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_project_new"
+        android:name="com.example.betaaplication.ui.projects.ProjectNewFragment"
+        android:label="Crear Proyecto"
+        tools:layout="@layout/fragment_project_new" />
+
+    <fragment
+        android:id="@+id/nav_project_data"
+        android:name="com.example.betaaplication.ui.projects.ProjectDataFragment"
+        android:label="Datos del Proyecto"
+        tools:layout="@layout/fragment_project_data">
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_clients"
         android:name="com.example.betaaplication.ui.clients.ClientsFragment"
         android:label="@string/menu_clients"
-        tools:layout="@layout/fragment_clients" />
+        tools:layout="@layout/fragment_clients">
+        <action
+            android:id="@+id/action_clients_to_new_client"
+            app:destination="@id/nav_client_new" />
+        <action
+            android:id="@+id/action_clients_to_client_data"
+            app:destination="@id/nav_client_data" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_client_new"
+        android:name="com.example.betaaplication.ui.clients.ClientNewFragment"
+        android:label="Crear Cliente"
+        tools:layout="@layout/fragment_client_new" />
+
+    <fragment
+        android:id="@+id/nav_client_data"
+        android:name="com.example.betaaplication.ui.clients.ClientDataFragment"
+        android:label="Datos del Cliente"
+        tools:layout="@layout/fragment_client_data">
+        <argument
+            android:name="clientId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_client_data_to_project_data"
+            app:destination="@id/nav_project_data" />
+    </fragment>
 
 
     <fragment
