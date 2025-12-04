@@ -19,30 +19,25 @@ import com.example.betaaplication.ui.projects.ProjectViewModel;
 
 public class ClientDataFragment extends Fragment implements ClientProjectsAdapter.OnProjectClickListener {
 
-    private ClientViewModel clientViewModel;
-    private ProjectViewModel projectViewModel;
-    private TextView nameTextView, phoneTextView, addressTextView;
-    private ClientProjectsAdapter adapter;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_client_data, container, false);
 
-        // Initialize Views
-        nameTextView = root.findViewById(R.id.text_client_name);
-        phoneTextView = root.findViewById(R.id.text_client_phone);
-        addressTextView = root.findViewById(R.id.text_client_address);
+        // Initialize Views with the CORRECT IDs
+        TextView nameTextView = root.findViewById(R.id.value_client_name);
+        TextView phoneTextView = root.findViewById(R.id.value_client_phone);
+        TextView addressTextView = root.findViewById(R.id.value_client_address);
 
         // Setup RecyclerView for projects
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view_client_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ClientProjectsAdapter(this);
+        ClientProjectsAdapter adapter = new ClientProjectsAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Initialize ViewModels
-        clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
-        projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
+        ClientViewModel clientViewModel = new ViewModelProvider(this).get(ClientViewModel.class);
+        ProjectViewModel projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
 
         // Get client ID from arguments and observe data
         if (getArguments() != null) {
@@ -58,9 +53,7 @@ public class ClientDataFragment extends Fragment implements ClientProjectsAdapte
             });
 
             // Observe projects for this client
-            projectViewModel.getProjectsForClient(clientId).observe(getViewLifecycleOwner(), projects -> {
-                adapter.setProjects(projects);
-            });
+            projectViewModel.getProjectsForClient(clientId).observe(getViewLifecycleOwner(), adapter::setProjects);
         }
 
         return root;
