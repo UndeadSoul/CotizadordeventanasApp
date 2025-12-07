@@ -12,17 +12,27 @@
         android:padding="16dp"
         tools:context=".ui.projects.ProjectDataFragment">
 
+        <!-- Title and Save Button -->
         <TextView
             android:id="@+id/text_project_data_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Detalles del Proyecto"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_project_changes"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Project Details -->
+        <Button
+            android:id="@+id/button_save_project_changes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- Client (Not Editable) -->
         <TextView
             android:id="@+id/label_project_client_name"
             android:layout_width="wrap_content"
@@ -34,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_project_data_title" />
 
         <TextView
-            android:id="@+id/text_project_client_name"
+            android:id="@+id/value_project_client_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -43,105 +53,165 @@
             app:layout_constraintTop_toTopOf="@+id/label_project_client_name"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <TextView
-            android:id="@+id/label_project_start_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Fecha de Inicio:"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_client_name" />
-
-        <TextView
-            android:id="@+id/text_project_start_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            tools:text="dd/mm/aaaa"
-            app:layout_constraintStart_toEndOf="@+id/label_project_start_date"
-            app:layout_constraintTop_toTopOf="@+id/label_project_start_date"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+        <!-- Project Status (Editable) -->
         <TextView
             android:id="@+id/label_project_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Estado:"
+            android:layout_marginTop="16dp"
+            android:text="Estado Proyecto:"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_start_date" />
+            app:layout_constraintTop_toBottomOf="@+id/value_project_client_name" />
 
-        <TextView
-            android:id="@+id/text_project_status"
+        <Spinner
+            android:id="@+id/spinner_edit_project_status"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            tools:text="En espera"
-            app:layout_constraintStart_toEndOf="@+id/label_project_status"
-            app:layout_constraintTop_toTopOf="@+id/label_project_status"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/label_project_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Dirección:"
-            android:textStyle="bold"
+            android:layout_height="48dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_project_status" />
 
+        <!-- Payment Status (Editable) -->
         <TextView
-            android:id="@+id/text_project_address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            tools:text="Calle Falsa 123"
-            app:layout_constraintStart_toEndOf="@+id/label_project_address"
-            app:layout_constraintTop_toTopOf="@+id/label_project_address"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/label_project_added_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Valor Agregado:"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_address" />
-
-        <TextView
-            android:id="@+id/text_project_added_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            tools:text="10000"
-            app:layout_constraintStart_toEndOf="@+id/label_project_added_value"
-            app:layout_constraintTop_toTopOf="@+id/label_project_added_value"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/label_project_notes"
+            android:id="@+id/label_payment_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Anotaciones:"
+            android:text="Estado Pago:"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_added_value" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_edit_project_status" />
 
-        <TextView
-            android:id="@+id/text_project_notes"
+        <Spinner
+            android:id="@+id/spinner_edit_payment_status"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            tools:text="Notas largas sobre el proyecto..."
+            android:layout_height="48dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_notes" />
+            app:layout_constraintTop_toBottomOf="@+id/label_payment_status" />
+
+        <!-- Windows List -->
+        <TextView
+            android:id="@+id/label_windows_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ventanas"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_edit_payment_status" />
+
+        <ImageButton
+            android:id="@+id/button_add_window"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="Agregar Ventana"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_windows_list"
+            app:layout_constraintBottom_toBottomOf="@+id/label_windows_list"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_project_windows"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/list_border"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/label_windows_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Other Windows Value (Editable) -->
+        <EditText
+            android:id="@+id/edit_text_other_windows_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Valor Otras Ventanas"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view_project_windows" />
+
+        <!-- Other Windows (Editable) -->
+        <EditText
+            android:id="@+id/edit_text_other_windows"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:hint="Otras Ventanas"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
+
+        <!-- Totals and Deposit -->
+        <TextView
+            android:id="@+id/label_total_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Total Proyecto:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/value_total_project"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows" />
+
+        <TextView
+            android:id="@+id/value_total_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$ 1.500.000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_total_project" />
+
+        <TextView
+            android:id="@+id/label_deposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Abono:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/value_deposit"
+            app:layout_constraintTop_toBottomOf="@+id/label_total_project" />
+
+        <TextView
+            android:id="@+id/value_deposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$ 50.000"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_deposit" />
+
+        <TextView
+            android:id="@+id/label_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Saldo:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/holo_red_dark"
+            app:layout_constraintEnd_toStartOf="@+id/value_balance"
+            app:layout_constraintTop_toBottomOf="@+id/label_deposit" />
+
+        <TextView
+            android:id="@+id/value_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$ 1.450.000"
+            android:textSize="18sp"
+            android:textColor="@android:color/holo_red_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_balance"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

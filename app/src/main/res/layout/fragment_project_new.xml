@@ -22,9 +22,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Client Spinner -->
+        <!-- Client -->
         <TextView
-            android:id="@+id/label_client_spinner"
+            android:id="@+id/label_client"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cliente"
@@ -36,39 +36,21 @@
             android:id="@+id/spinner_client"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_client_spinner"/>
+            app:layout_constraintEnd_toStartOf="@+id/button_add_client"
+            app:layout_constraintTop_toBottomOf="@+id/label_client"/>
 
-        <!-- Start Date -->
-        <EditText
-            android:id="@+id/edit_text_start_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Fecha de Inicio (dd/mm/aaaa)"
-            android:inputType="date"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_client" />
-
-        <!-- Status Spinner -->
-        <TextView
-            android:id="@+id/label_status_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estado"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_start_date" />
-
-        <Spinner
-            android:id="@+id/spinner_status"
-            android:layout_width="0dp"
+        <ImageButton
+            android:id="@+id/button_add_client"
+            android:layout_width="48dp"
             android:layout_height="48dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="Crear nuevo cliente"
+            android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_status_spinner" />
+            app:layout_constraintTop_toTopOf="@+id/spinner_client"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_client"/>
 
         <!-- Delivery Address -->
         <EditText
@@ -80,32 +62,115 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_status" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_client" />
 
-        <!-- Notes -->
+        <!-- Start Date -->
         <EditText
-            android:id="@+id/edit_text_notes"
+            android:id="@+id/edit_text_start_date"
             android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:hint="Anotaciones"
-            android:inputType="textMultiLine"
-            android:gravity="top"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de Inicio (dd/mm/aaaa)"
+            android:inputType="date"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_delivery_address" />
 
-        <!-- Added Value -->
+        <!-- Project Status -->
+        <TextView
+            android:id="@+id/label_project_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado Proyecto"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_start_date" />
+
+        <Spinner
+            android:id="@+id/spinner_project_status"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_project_status" />
+
+        <!-- Payment Status -->
+        <TextView
+            android:id="@+id/label_payment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estado Pago"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_project_status" />
+
+        <Spinner
+            android:id="@+id/spinner_payment_status"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_payment_status" />
+
+        <!-- Deposit -->
         <EditText
-            android:id="@+id/edit_text_added_value"
+            android:id="@+id/edit_text_deposit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Valor Agregado"
+            android:hint="Abono"
             android:inputType="numberDecimal"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_notes" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_payment_status" />
+
+        <!-- Windows List -->
+        <TextView
+            android:id="@+id/label_windows_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ventanas"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_deposit" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_windows"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/list_border"
+            android:padding="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/label_windows_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Other Windows Value -->
+        <EditText
+            android:id="@+id/edit_text_other_windows_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Valor Otras Ventanas"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view_windows" />
+
+        <!-- Other Windows -->
+        <EditText
+            android:id="@+id/edit_text_other_windows"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:hint="Otras Ventanas"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
 
         <Button
             android:id="@+id/button_save_project"
@@ -113,7 +178,7 @@
             android:layout_height="wrap_content"
             android:text="Guardar"
             android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_added_value"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

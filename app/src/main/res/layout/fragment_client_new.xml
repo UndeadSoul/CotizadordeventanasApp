@@ -49,7 +49,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Dirección"
-            android:inputType="textPostalAddress"/>
+            android:inputType="textPostalAddress"
+            android:layout_marginBottom="16dp"/>
+
+        <EditText
+            android:id="@+id/edit_text_rut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="RUT (sin guion)"
+            android:inputType="number"/>
 
     </LinearLayout>
 

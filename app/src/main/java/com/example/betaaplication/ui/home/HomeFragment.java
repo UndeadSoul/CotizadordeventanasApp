@@ -25,7 +25,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         //configurar boton
         binding.btQuote.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.action_homeFragment_to_quoteFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.action_global_nav_quote);
         });
         return root;
     }

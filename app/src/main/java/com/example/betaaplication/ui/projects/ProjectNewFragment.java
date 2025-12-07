@@ -8,14 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.betaaplication.Client;
 import com.example.betaaplication.Project;
@@ -24,14 +25,15 @@ import com.example.betaaplication.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class ProjectNewFragment extends Fragment {
 
     private ProjectViewModel projectViewModel;
-    private Spinner clientSpinner, statusSpinner;
-    private EditText startDateEditText, deliveryAddressEditText, notesEditText, addedValueEditText;
+    private Spinner clientSpinner, projectStatusSpinner, paymentStatusSpinner;
+    private EditText deliveryAddressEditText, startDateEditText, depositEditText, otherWindowsValueEditText, otherWindowsEditText;
     private List<Client> clientList = new ArrayList<>();
 
     @Nullable
@@ -41,24 +43,29 @@ public class ProjectNewFragment extends Fragment {
 
         // Initialize Views
         clientSpinner = root.findViewById(R.id.spinner_client);
-        statusSpinner = root.findViewById(R.id.spinner_status);
-        startDateEditText = root.findViewById(R.id.edit_text_start_date);
+        ImageButton addClientButton = root.findViewById(R.id.button_add_client);
         deliveryAddressEditText = root.findViewById(R.id.edit_text_delivery_address);
-        notesEditText = root.findViewById(R.id.edit_text_notes);
-        addedValueEditText = root.findViewById(R.id.edit_text_added_value);
+        startDateEditText = root.findViewById(R.id.edit_text_start_date);
+        projectStatusSpinner = root.findViewById(R.id.spinner_project_status);
+        paymentStatusSpinner = root.findViewById(R.id.spinner_payment_status);
+        depositEditText = root.findViewById(R.id.edit_text_deposit);
+        otherWindowsValueEditText = root.findViewById(R.id.edit_text_other_windows_value);
+        otherWindowsEditText = root.findViewById(R.id.edit_text_other_windows);
         Button saveButton = root.findViewById(R.id.button_save_project);
 
         // Initialize ViewModel
         projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
 
-        // Setup Client Spinner
+        // Setup UI components
         setupClientSpinner();
+        setupStatusSpinners();
+        setDefaultDate();
 
-        // Setup Status Spinner
-        setupStatusSpinner();
-
-        // Save Button Logic
+        // Button Listeners
         saveButton.setOnClickListener(v -> saveProject());
+        addClientButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_project_new_to_client_new);
+        });
 
         return root;
     }
@@ -80,33 +87,46 @@ public class ProjectNewFragment extends Fragment {
         });
     }
 
-    private void setupStatusSpinner() {
-        String[] statusOptions = {"En espera", "Pagado", "Finalizado"};
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statusOptions);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(statusAdapter);
+    private void setupStatusSpinners() {
+        // Project Status Spinner
+        String[] projectStatusOptions = {"En espera de confirmación", "En fabricación", "Entregado"};
+        ArrayAdapter<String> projectStatusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, projectStatusOptions);
+        projectStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        projectStatusSpinner.setAdapter(projectStatusAdapter);
+
+        // Payment Status Spinner
+        String[] paymentStatusOptions = {"Sin pagar", "Abonado", "Pagado"};
+        ArrayAdapter<String> paymentStatusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, paymentStatusOptions);
+        paymentStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        paymentStatusSpinner.setAdapter(paymentStatusAdapter);
+    }
+
+    private void setDefaultDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        startDateEditText.setText(sdf.format(new Date()));
     }
 
     private void saveProject() {
-        // Get selected client
+        // Client Validation
         int selectedClientPosition = clientSpinner.getSelectedItemPosition();
         if (clientList.isEmpty() || selectedClientPosition < 0) {
             Toast.makeText(getContext(), "Por favor, seleccione un cliente", Toast.LENGTH_SHORT).show();
             return;
         }
         Client selectedClient = clientList.get(selectedClientPosition);
-        int clientId = selectedClient.getId();
 
-        // Get other fields
-        String startDate = startDateEditText.getText().toString().trim();
-        String status = statusSpinner.getSelectedItem().toString();
+        // Get data from fields
         String deliveryAddress = deliveryAddressEditText.getText().toString().trim();
-        String notes = notesEditText.getText().toString().trim();
-        String addedValue = addedValueEditText.getText().toString().trim();
+        String startDate = startDateEditText.getText().toString().trim();
+        String projectStatus = projectStatusSpinner.getSelectedItem().toString();
+        String paymentStatus = paymentStatusSpinner.getSelectedItem().toString();
+        String deposit = depositEditText.getText().toString().trim();
+        String otherWindows = otherWindowsEditText.getText().toString().trim();
+        String otherWindowsValue = otherWindowsValueEditText.getText().toString().trim();
 
-        // Validation
-        if (TextUtils.isEmpty(startDate) || TextUtils.isEmpty(deliveryAddress)) {
-            Toast.makeText(getContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+        // Field Validation
+        if (TextUtils.isEmpty(deliveryAddress) || TextUtils.isEmpty(startDate)) {
+            Toast.makeText(getContext(), "La dirección y la fecha no pueden estar vacías", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -116,7 +136,7 @@ public class ProjectNewFragment extends Fragment {
         }
 
         // Create and insert project
-        Project newProject = new Project(clientId, startDate, status, deliveryAddress, notes, addedValue);
+        Project newProject = new Project(selectedClient.getId(), deliveryAddress, startDate, projectStatus, paymentStatus, deposit, otherWindows, otherWindowsValue);
         projectViewModel.insert(newProject);
 
         // Navigate back
@@ -125,7 +145,7 @@ public class ProjectNewFragment extends Fragment {
 
     private boolean isValidDate(String dateStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        sdf.setLenient(false); // This is important to reject invalid dates like 32/01/2023
+        sdf.setLenient(false);
         try {
             sdf.parse(dateStr);
         } catch (ParseException e) {

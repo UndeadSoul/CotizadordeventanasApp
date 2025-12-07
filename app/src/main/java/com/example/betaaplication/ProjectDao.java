@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -14,11 +15,23 @@ public interface ProjectDao {
     @Insert
     void insert(Project project);
 
-    @Query("SELECT p.id as projectId, c.name as clientName, p.startDate as startDate FROM projects_table as p JOIN clients_table as c ON p.clientId = c.id ORDER BY p.startDate DESC")
-    LiveData<List<ProjectWithClientName>> getAllProjectsWithClientName();
+    @Update
+    void update(Project project);
+
+    @Query("SELECT p.id as projectId, c.name as clientName, p.startDate, p.projectStatus, " +
+           "(p.otherWindowsValue + COALESCE((SELECT SUM(CAST(w.price AS REAL)) FROM windows_table w WHERE w.projectId = p.id), 0.0)) as totalPrice " +
+           "FROM projects_table p JOIN clients_table c ON p.clientId = c.id " +
+           "ORDER BY p.startDate DESC")
+    LiveData<List<ProjectListItem>> getProjectListItems();
+
+    @Query("SELECT p.id as projectId, p.startDate, p.projectStatus, " +
+           "(p.otherWindowsValue + COALESCE((SELECT SUM(CAST(w.price AS REAL)) FROM windows_table w WHERE w.projectId = p.id), 0.0)) as totalPrice " +
+           "FROM projects_table p WHERE p.clientId = :clientId " +
+           "ORDER BY p.startDate DESC")
+    LiveData<List<ClientProjectListItem>> getClientProjectListItems(int clientId);
 
     @Transaction
-    @Query("SELECT p.id, c.name as clientName, p.startDate, p.status, p.deliveryAddress, p.notes, p.addedValue FROM projects_table p JOIN clients_table c ON p.clientId = c.id WHERE p.id = :projectId")
+    @Query("SELECT p.id, p.clientId, c.name as clientName, p.deliveryAddress, p.startDate, p.projectStatus, p.paymentStatus, p.deposit, p.otherWindows, p.otherWindowsValue FROM projects_table p JOIN clients_table c ON p.clientId = c.id WHERE p.id = :projectId")
     LiveData<ProjectDetails> getProjectDetailsById(int projectId);
 
     @Query("SELECT * FROM projects_table ORDER BY startDate DESC")

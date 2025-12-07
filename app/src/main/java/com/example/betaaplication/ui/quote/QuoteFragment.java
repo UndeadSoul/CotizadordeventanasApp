@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.betaaplication.R;
@@ -18,36 +17,50 @@ import com.example.betaaplication.databinding.FragmentQuoteBinding;
 public class QuoteFragment extends Fragment {
 
     private FragmentQuoteBinding binding;
+    private int projectId = -1; // Default to -1 (not in project mode)
+
+    // Constants for business logic
+    private static final float ALTURA_LIMITE_L20_CM = 150.0f;
+    private static final float DIMENSION_MINIMA_CM = 30.0f;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            projectId = getArguments().getInt("projectId", -1);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentQuoteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        float alturaLimiteCm=Float.parseFloat("150");
-        float alturaMinimaCm=Float.parseFloat("30");
-        float anchoMinimoCm=Float.parseFloat("30");
+
         // Configurar el boton
         binding.btContinue.setOnClickListener(v -> {
-            //obtener el valor del texto de alto y ancho
             String inputValueH = binding.editTextHeight.getText().toString();
             String inputValueW = binding.editTextWidth.getText().toString();
-            //Verificar que no estén vacíos
+
             if (!inputValueW.isEmpty() && !inputValueH.isEmpty()){
-                //verificar si la altura es de linea 20 o 25
-                float valueH=Float.parseFloat(inputValueH);
-                float valueW=Float.parseFloat(inputValueW);
-                // Usa Navigation Component para navegar al nuevo fragmento
-                Bundle bundle = new Bundle();
-                bundle.putString("valueH", inputValueH);
-                bundle.putString("valueW", inputValueW);
-                if (valueH<=alturaMinimaCm || valueW<=anchoMinimoCm){
-                    Toast.makeText(getContext(), "Ingrese valores mayores a 30cm", Toast.LENGTH_SHORT).show();
-                }else{
-                    if (valueH<alturaLimiteCm){
-                        //redirigir a linea 20 y pasar valores
+                float valueH = Float.parseFloat(inputValueH);
+                float valueW = Float.parseFloat(inputValueW);
+
+                if (valueH <= DIMENSION_MINIMA_CM || valueW <= DIMENSION_MINIMA_CM){
+                    String message = String.format("Ingrese valores mayores a %.0f cm", DIMENSION_MINIMA_CM);
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("valueH", inputValueH);
+                    bundle.putString("valueW", inputValueW);
+                    bundle.putInt("projectId", projectId); // Pass the projectId to the next fragment
+
+                    if (valueH < ALTURA_LIMITE_L20_CM){
                         NavHostFragment.findNavController(this).navigate(R.id.action_quoteFragment_to_newFragment20, bundle);
-                    }else{
-                        //redirigir a linea 25 y pasar valores
+                    } else if (projectId != -1) {
+                        // Block navigation to L25 if in 'add to project' mode
+                        Toast.makeText(getContext(), "El máximo de altura para agregar ventanas a un proyecto es 150cm.", Toast.LENGTH_LONG).show();
+                    } else {
+                        // Allow navigation to L25 only in normal quote mode
                         NavHostFragment.findNavController(this).navigate(R.id.action_quoteFragment_to_newFragment25, bundle);
                     }
                 }

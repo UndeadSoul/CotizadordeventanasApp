@@ -7,13 +7,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(
-        entities = {Data.class, Client.class, Project.class},
-        version = 3
+        entities = {Data.class, Client.class, Project.class, Ventana.class},
+        version = 7
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DaoData daoData();
     public abstract ClientDao clientDao();
     public abstract ProjectDao projectDao();
+    public abstract VentanaDao ventanaDao();
 
     private static volatile AppDatabase INSTANCE;
 

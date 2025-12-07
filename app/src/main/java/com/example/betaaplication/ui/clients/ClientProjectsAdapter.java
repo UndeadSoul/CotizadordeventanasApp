@@ -6,14 +6,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.betaaplication.Project;
+
+import com.example.betaaplication.ClientProjectListItem;
+import com.example.betaaplication.FormatUtils;
 import com.example.betaaplication.R;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProjectsAdapter extends RecyclerView.Adapter<ClientProjectsAdapter.ProjectViewHolder> {
 
-    private List<Project> projectList = new ArrayList<>();
+    private List<ClientProjectListItem> projectList = new ArrayList<>();
     private OnProjectClickListener onProjectClickListener;
 
     public interface OnProjectClickListener {
@@ -33,9 +35,10 @@ public class ClientProjectsAdapter extends RecyclerView.Adapter<ClientProjectsAd
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
-        Project currentProject = projectList.get(position);
-        holder.dateTextView.setText(currentProject.getStartDate());
-        holder.statusTextView.setText(currentProject.getStatus());
+        ClientProjectListItem currentProject = projectList.get(position);
+        holder.dateTextView.setText(currentProject.startDate);
+        holder.statusTextView.setText(currentProject.projectStatus);
+        holder.totalPriceTextView.setText(FormatUtils.formatCurrency(currentProject.totalPrice));
     }
 
     @Override
@@ -43,7 +46,7 @@ public class ClientProjectsAdapter extends RecyclerView.Adapter<ClientProjectsAd
         return projectList.size();
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(List<ClientProjectListItem> projects) {
         this.projectList = projects;
         notifyDataSetChanged();
     }
@@ -51,12 +54,14 @@ public class ClientProjectsAdapter extends RecyclerView.Adapter<ClientProjectsAd
     public class ProjectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView dateTextView;
         public TextView statusTextView;
+        public TextView totalPriceTextView;
         OnProjectClickListener onProjectClickListener;
 
         public ProjectViewHolder(@NonNull View itemView, OnProjectClickListener onProjectClickListener) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.text_view_project_date);
             statusTextView = itemView.findViewById(R.id.text_view_project_status);
+            totalPriceTextView = itemView.findViewById(R.id.text_view_total_price);
             this.onProjectClickListener = onProjectClickListener;
             itemView.setOnClickListener(this);
         }
@@ -64,7 +69,7 @@ public class ClientProjectsAdapter extends RecyclerView.Adapter<ClientProjectsAd
         @Override
         public void onClick(View view) {
             if (onProjectClickListener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
-                onProjectClickListener.onProjectClick(projectList.get(getAdapterPosition()).getId());
+                onProjectClickListener.onProjectClick(projectList.get(getAdapterPosition()).projectId);
             }
         }
     }

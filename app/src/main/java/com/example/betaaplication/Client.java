@@ -15,10 +15,13 @@ public class Client {
 
     private String address;
 
-    public Client(String name, String phone, String address) {
+    private String rut;
+
+    public Client(String name, String phone, String address, String rut) {
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.rut = rut;
     }
 
     public void setId(int id) {
@@ -39,5 +42,9 @@ public class Client {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getRut() {
+        return rut;
     }
 }

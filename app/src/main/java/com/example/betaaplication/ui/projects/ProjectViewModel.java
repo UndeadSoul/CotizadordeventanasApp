@@ -5,11 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.betaaplication.Client;
+import com.example.betaaplication.ClientProjectListItem;
 import com.example.betaaplication.ClientRepository;
 import com.example.betaaplication.Project;
+import com.example.betaaplication.ProjectListItem;
 import com.example.betaaplication.ProjectRepository;
 import com.example.betaaplication.ProjectDetails;
-import com.example.betaaplication.ProjectWithClientName;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ProjectViewModel extends AndroidViewModel {
     private ClientRepository clientRepository;
     private LiveData<List<Project>> allProjects;
     private LiveData<List<Client>> allClients;
-    private LiveData<List<ProjectWithClientName>> allProjectsWithClientNames;
+    private LiveData<List<ProjectListItem>> projectListItems;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
@@ -27,11 +28,15 @@ public class ProjectViewModel extends AndroidViewModel {
         clientRepository = new ClientRepository(application);
         allProjects = projectRepository.getAllProjects();
         allClients = clientRepository.getAllClients();
-        allProjectsWithClientNames = projectRepository.getAllProjectsWithClientName();
+        projectListItems = projectRepository.getProjectListItems();
     }
 
-    public LiveData<List<ProjectWithClientName>> getAllProjectsWithClientNames() {
-        return allProjectsWithClientNames;
+    public LiveData<List<ProjectListItem>> getProjectListItems() {
+        return projectListItems;
+    }
+
+    public LiveData<List<ClientProjectListItem>> getClientProjectListItems(int clientId) {
+        return projectRepository.getClientProjectListItems(clientId);
     }
 
     public LiveData<ProjectDetails> getProjectDetailsById(int projectId) {
@@ -50,7 +55,7 @@ public class ProjectViewModel extends AndroidViewModel {
         projectRepository.insert(project);
     }
 
-    public LiveData<List<Project>> getProjectsForClient(int clientId) {
-        return projectRepository.getProjectsForClient(clientId);
+    public void update(Project project) {
+        projectRepository.update(project);
     }
 }

@@ -14,10 +14,14 @@ public class ProjectWithClientName {
     @ColumnInfo(name = "startDate")
     public String startDate;
 
+    @ColumnInfo(name = "projectStatus")
+    public String projectStatus; // New field
+
     // Room uses this constructor to create objects.
-    public ProjectWithClientName(int projectId, String clientName, String startDate) {
+    public ProjectWithClientName(int projectId, String clientName, String startDate, String projectStatus) {
         this.projectId = projectId;
         this.clientName = clientName;
         this.startDate = startDate;
+        this.projectStatus = projectStatus;
     }
 }

@@ -18,25 +18,31 @@ public class Project {
     @ColumnInfo(index = true)
     private int clientId;
 
-    private String startDate;
-
-    private String status;
-
     private String deliveryAddress;
 
-    private String notes;
+    private String startDate;
 
-    private String addedValue;
+    private String projectStatus; // Renamed from status
+
+    private String paymentStatus; // New field
+
+    private String deposit; // New field for Abono
+
+    private String otherWindows; // Renamed from notes
+
+    private String otherWindowsValue; // Renamed from addedValue
 
     // Constructor, getters, and setters
 
-    public Project(int clientId, String startDate, String status, String deliveryAddress, String notes, String addedValue) {
+    public Project(int clientId, String deliveryAddress, String startDate, String projectStatus, String paymentStatus, String deposit, String otherWindows, String otherWindowsValue) {
         this.clientId = clientId;
-        this.startDate = startDate;
-        this.status = status;
         this.deliveryAddress = deliveryAddress;
-        this.notes = notes;
-        this.addedValue = addedValue;
+        this.startDate = startDate;
+        this.projectStatus = projectStatus;
+        this.paymentStatus = paymentStatus;
+        this.deposit = deposit;
+        this.otherWindows = otherWindows;
+        this.otherWindowsValue = otherWindowsValue;
     }
 
     public int getId() {
@@ -51,23 +57,51 @@ public class Project {
         return clientId;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
     public String getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public String getAddedValue() {
-        return addedValue;
+    public String getProjectStatus() {
+        return projectStatus;
+    }
+
+    public void setProjectStatus(String projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(String deposit) {
+        this.deposit = deposit;
+    }
+
+    public String getOtherWindows() {
+        return otherWindows;
+    }
+
+    public void setOtherWindows(String otherWindows) {
+        this.otherWindows = otherWindows;
+    }
+
+    public String getOtherWindowsValue() {
+        return otherWindowsValue;
+    }
+
+    public void setOtherWindowsValue(String otherWindowsValue) {
+        this.otherWindowsValue = otherWindowsValue;
     }
 }

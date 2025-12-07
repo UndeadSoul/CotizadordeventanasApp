@@ -24,10 +24,11 @@ public class ClientDataFragment extends Fragment implements ClientProjectsAdapte
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_client_data, container, false);
 
-        // Initialize Views with the CORRECT IDs
+        // Initialize Views
         TextView nameTextView = root.findViewById(R.id.value_client_name);
         TextView phoneTextView = root.findViewById(R.id.value_client_phone);
         TextView addressTextView = root.findViewById(R.id.value_client_address);
+        TextView rutTextView = root.findViewById(R.id.value_client_rut);
 
         // Setup RecyclerView for projects
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view_client_projects);
@@ -49,11 +50,14 @@ public class ClientDataFragment extends Fragment implements ClientProjectsAdapte
                     nameTextView.setText(client.getName());
                     phoneTextView.setText(client.getPhone());
                     addressTextView.setText(client.getAddress());
+                    rutTextView.setText(client.getRut());
                 }
             });
 
-            // Observe projects for this client
-            projectViewModel.getProjectsForClient(clientId).observe(getViewLifecycleOwner(), adapter::setProjects);
+            // Observe projects for this client using the NEW method
+            projectViewModel.getClientProjectListItems(clientId).observe(getViewLifecycleOwner(), clientProjectListItems -> {
+                adapter.setProjects(clientProjectListItems);
+            });
         }
 
         return root;

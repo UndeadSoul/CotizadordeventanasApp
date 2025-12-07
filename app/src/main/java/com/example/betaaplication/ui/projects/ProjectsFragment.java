@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,13 +12,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.betaaplication.ProjectWithClientName;
 import com.example.betaaplication.R;
 
 public class ProjectsFragment extends Fragment implements ProjectsAdapter.OnProjectClickListener {
 
     private ProjectViewModel projectViewModel;
-    private ProjectsAdapter projectsAdapter;
 
     @Nullable
     @Override
@@ -31,14 +27,14 @@ public class ProjectsFragment extends Fragment implements ProjectsAdapter.OnProj
         // Setup RecyclerView
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        projectsAdapter = new ProjectsAdapter(this);
+        ProjectsAdapter projectsAdapter = new ProjectsAdapter(this);
         recyclerView.setAdapter(projectsAdapter);
 
         // Setup ViewModel and observe LiveData
         projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
-        projectViewModel.getAllProjectsWithClientNames().observe(getViewLifecycleOwner(), projects -> {
+        projectViewModel.getProjectListItems().observe(getViewLifecycleOwner(), projectListItems -> {
             // Update the cached copy of the projects in the adapter.
-            projectsAdapter.setProjects(projects);
+            projectsAdapter.setProjects(projectListItems);
         });
 
         // Handle the add button click to navigate to the new project screen

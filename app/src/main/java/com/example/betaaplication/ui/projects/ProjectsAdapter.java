@@ -6,14 +6,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.betaaplication.ProjectWithClientName;
+
+import com.example.betaaplication.FormatUtils;
+import com.example.betaaplication.ProjectListItem;
 import com.example.betaaplication.R;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
 
-    private List<ProjectWithClientName> projectList = new ArrayList<>();
+    private List<ProjectListItem> projectList = new ArrayList<>();
     private OnProjectClickListener onProjectClickListener;
 
     public interface OnProjectClickListener {
@@ -33,9 +35,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
-        ProjectWithClientName currentProject = projectList.get(position);
+        ProjectListItem currentProject = projectList.get(position);
         holder.clientNameTextView.setText(currentProject.clientName);
+        holder.statusTextView.setText(currentProject.projectStatus);
         holder.startDateTextView.setText(currentProject.startDate);
+        holder.totalPriceTextView.setText(FormatUtils.formatCurrency(currentProject.totalPrice));
     }
 
     @Override
@@ -43,19 +47,23 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         return projectList.size();
     }
 
-    public void setProjects(List<ProjectWithClientName> projects) {
+    public void setProjects(List<ProjectListItem> projects) {
         this.projectList = projects;
         notifyDataSetChanged();
     }
 
     public class ProjectViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView clientNameTextView;
+        public TextView statusTextView;
+        public TextView totalPriceTextView;
         public TextView startDateTextView;
         OnProjectClickListener onProjectClickListener;
 
         public ProjectViewHolder(@NonNull View itemView, OnProjectClickListener onProjectClickListener) {
             super(itemView);
             clientNameTextView = itemView.findViewById(R.id.text_view_client_name);
+            statusTextView = itemView.findViewById(R.id.text_view_project_status);
+            totalPriceTextView = itemView.findViewById(R.id.text_view_total_price);
             startDateTextView = itemView.findViewById(R.id.text_view_start_date);
             this.onProjectClickListener = onProjectClickListener;
             itemView.setOnClickListener(this);

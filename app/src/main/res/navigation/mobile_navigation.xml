@@ -5,14 +5,17 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+    <!-- Global action to navigate to the quote screen -->
+    <action
+        android:id="@+id/action_global_nav_quote"
+        app:destination="@id/nav_quote" />
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.betaaplication.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_quoteFragment"
-            app:destination="@id/nav_quote"/>
+        tools:layout="@layout/fragment_home">
+        <!-- The specific action to quote has been removed, we will use the global one -->
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/nav_settings"/>
@@ -22,7 +25,6 @@
         <action
             android:id="@+id/action_homeFragment_to_clientsFragment"
             app:destination="@id/nav_clients"/>
-
     </fragment>
 
     <fragment
@@ -36,7 +38,10 @@
         <action
             android:id="@+id/action_quoteFragment_to_newFragment25"
             app:destination="@id/l25" />
-
+        <argument
+            android:name="projectId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -62,7 +67,11 @@
         android:id="@+id/nav_project_new"
         android:name="com.example.betaaplication.ui.projects.ProjectNewFragment"
         android:label="Crear Proyecto"
-        tools:layout="@layout/fragment_project_new" />
+        tools:layout="@layout/fragment_project_new">
+        <action
+            android:id="@+id/action_project_new_to_client_new"
+            app:destination="@id/nav_client_new" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_project_data"
@@ -71,6 +80,22 @@
         tools:layout="@layout/fragment_project_data">
         <argument
             android:name="projectId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_project_data_to_quote"
+            app:destination="@id/nav_quote" />
+        <action
+            android:id="@+id/action_project_data_to_window_data"
+            app:destination="@id/nav_window_data" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_window_data"
+        android:name="com.example.betaaplication.ui.windows.WindowDataFragment"
+        android:label="Detalles de la Ventana"
+        tools:layout="@layout/fragment_window_data">
+        <argument
+            android:name="windowId"
             app:argType="integer" />
     </fragment>
 
@@ -105,7 +130,6 @@
             android:id="@+id/action_client_data_to_project_data"
             app:destination="@id/nav_project_data" />
     </fragment>
-
 
     <fragment
         android:id="@+id/l20"

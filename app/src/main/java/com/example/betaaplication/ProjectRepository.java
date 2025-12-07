@@ -8,17 +8,21 @@ public class ProjectRepository {
 
     private ProjectDao projectDao;
     private LiveData<List<Project>> allProjects;
-    private LiveData<List<ProjectWithClientName>> allProjectsWithClientName;
+    private LiveData<List<ProjectListItem>> projectListItems;
 
     public ProjectRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
         projectDao = db.projectDao();
         allProjects = projectDao.getAllProjects();
-        allProjectsWithClientName = projectDao.getAllProjectsWithClientName();
+        projectListItems = projectDao.getProjectListItems();
     }
 
-    public LiveData<List<ProjectWithClientName>> getAllProjectsWithClientName() {
-        return allProjectsWithClientName;
+    public LiveData<List<ProjectListItem>> getProjectListItems() {
+        return projectListItems;
+    }
+
+    public LiveData<List<ClientProjectListItem>> getClientProjectListItems(int clientId) {
+        return projectDao.getClientProjectListItems(clientId);
     }
 
     public LiveData<ProjectDetails> getProjectDetailsById(int projectId) {
@@ -36,6 +40,12 @@ public class ProjectRepository {
     public void insert(Project project) {
         new Thread(() -> {
             projectDao.insert(project);
+        }).start();
+    }
+
+    public void update(Project project) {
+        new Thread(() -> {
+            projectDao.update(project);
         }).start();
     }
 }

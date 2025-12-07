@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -17,22 +18,41 @@
             android:id="@+id/text_view_client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre del Cliente"
+            tools:text="Nombre del Cliente"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_view_project_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Estado del Proyecto"
+            android:textStyle="italic"
+            android:textColor="?android:attr/textColorSecondary"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/text_view_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="$ 1.234.567"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/text_view_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="dd/mm/aaaa"
+            tools:text="dd/mm/aaaa"
             android:textColor="?android:attr/textColorSecondary"/>
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_chevron_right_24" />
 
 </LinearLayout>

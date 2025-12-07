@@ -32,24 +32,36 @@ public class ClientNewFragment extends Fragment {
         EditText nameEditText = root.findViewById(R.id.edit_text_name);
         EditText phoneEditText = root.findViewById(R.id.edit_text_phone);
         EditText addressEditText = root.findViewById(R.id.edit_text_address);
+        EditText rutEditText = root.findViewById(R.id.edit_text_rut);
         Button saveButton = root.findViewById(R.id.button_save);
 
         saveButton.setOnClickListener(v -> {
             String name = nameEditText.getText().toString().trim();
             String phone = phoneEditText.getText().toString().trim();
             String address = addressEditText.getText().toString().trim();
+            String rutRaw = rutEditText.getText().toString().trim();
 
             // Validate that all fields are filled
-            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address)) {
+            if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(address) || TextUtils.isEmpty(rutRaw)) {
                 Toast.makeText(getContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
-            } else {
-                // Create a new client and insert it into the database
-                Client newClient = new Client(name, phone, address);
-                clientViewModel.insert(newClient);
-
-                // After saving, navigate back to the client list
-                getParentFragmentManager().popBackStack();
+                return;
             }
+
+            // Validate RUT format
+            if (rutRaw.length() != 9 || !TextUtils.isDigitsOnly(rutRaw)) {
+                Toast.makeText(getContext(), "Formato de RUT inválido. Ingrese 9 dígitos sin puntos ni guion.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Format RUT
+            String formattedRut = rutRaw.substring(0, 8) + "-" + rutRaw.substring(8);
+
+            // Create a new client and insert it into the database
+            Client newClient = new Client(name, phone, address, formattedRut);
+            clientViewModel.insert(newClient);
+
+            // After saving, navigate back to the client list
+            getParentFragmentManager().popBackStack();
         });
 
         return root;

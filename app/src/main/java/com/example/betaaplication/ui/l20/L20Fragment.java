@@ -1,13 +1,15 @@
 package com.example.betaaplication.ui.l20;
 
+import android.content.Context;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,94 +18,113 @@ import android.widget.Toast;
 import com.example.betaaplication.Aluminium;
 import com.example.betaaplication.AppDatabase;
 import com.example.betaaplication.Crystal;
+import com.example.betaaplication.R;
+import com.example.betaaplication.Ventana;
 import com.example.betaaplication.WinAdds;
 import com.example.betaaplication.databinding.FragmentL20Binding;
+import com.example.betaaplication.ui.windows.VentanaViewModel;
 
 import java.util.concurrent.Future;
 
 public class L20Fragment extends Fragment {
 
     private FragmentL20Binding binding;
+    private int projectId = -1;
+    private VentanaViewModel ventanaViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            projectId = getArguments().getInt("projectId", -1);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentL20Binding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Obtén el valor pasado como argumento y mostrarlo
-        if (getArguments() != null) {
-            String valueW = getArguments().getString("valueW", "Valor por defecto");
-            String valueH = getArguments().getString("valueH", "Valor por defecto");
-            String valueWcm=valueW+" cm";
-            String valueHcm=valueH+" cm";
-            binding.tvWidth.setText(valueWcm);
-            binding.tvHeight.setText(valueHcm);
+        ventanaViewModel = new ViewModelProvider(this).get(VentanaViewModel.class);
+
+        // Set default values from arguments
+        String valueW = getArguments().getString("valueW", "0");
+        String valueH = getArguments().getString("valueH", "0");
+        binding.tvWidth.setText(valueW + " cm");
+        binding.tvHeight.setText(valueH + " cm");
+
+        // Change button text if in project mode
+        if (projectId != -1) {
+            binding.btCalc.setText("Guardar Ventana");
         }
-        // Accion al precionar el boton
+
         binding.btCalc.setOnClickListener(v -> {
-            //obtener valores del hilo principal
-            float width = Float.parseFloat(getArguments().getString("valueW", "100"));
-            float height = Float.parseFloat(getArguments().getString("valueH", "100"));
-            String varAlumColor = binding.spinner.getSelectedItem().toString();
-            String valCrysType = binding.spinner2.getSelectedItem().toString();
-            Boolean valInstallBool = binding.cbInstall.isChecked();
-            Boolean valFreightBool = binding.cbFreight.isChecked();
-            float[] valFreightAmount = new float[1];
-            if (valFreightBool && !binding.etFreightAmount.getText().toString().isEmpty()){
-                valFreightAmount[0] = Float.parseFloat(binding.etFreightAmount.getText().toString());
-                //Toast.makeText(requireContext(), "Ambos seleccionados"+valFreightBool+valFreightAmount, Toast.LENGTH_SHORT).show();
-            }else {
-                valFreightAmount[0]= 0;
-            }
-            String line = "20"; // Ejemplo de valor fijo para la línea
-            //Verificar los valores ingresados Toast.makeText(requireContext(), "Seleccionado: "+width+height+varAlumColor+valCrysType+valInstallBool+valFreightBool+valFreightAmount[0], Toast.LENGTH_SHORT).show();
-
-            new Thread(()->{
-                Aluminium aluminium = new Aluminium();
-                Crystal crystal = new Crystal();
-                WinAdds winadds = new WinAdds();
-                AppDatabase db = AppDatabase.getInstance(getContext());
-
-                try {
-
-                    //usar los valores de los arreglos para llamar a los métodos
-                    Future<Float> aluminiumCost= aluminium.getAlumCost(width,height,varAlumColor,line,requireContext());
-                    Future<Float> crystalCost= crystal.getCrystalCost(width,height,valCrysType,requireContext());
-                    Future<Float> addsCost= winadds.getAddsCost(width,height,requireContext());
-                    // Obtener el coste de los agregados
-                    float costekmflete = Float.parseFloat(db.daoData().getOneDataValue("costokmflete").get(0).toString());
-                    float other = 0;
-                    if (valInstallBool){
-                        other = other + 5000;
-                    }else {
-                        other = other + 0;
-                    }
-                    if (valFreightBool){
-                        other = other + valFreightAmount[0]*costekmflete;
-                    }else{
-                        other = other + 0;
-                    }
-                    // obtener el valor del precio de mercado
-                    float preciomercadom2 = Float.parseFloat(db.daoData().getOneDataValue("preciomercadom2").get(0).toString());
-                    float costoMercado = (preciomercadom2*(width/100)*(height/100))+other;
-
-                    float totalCost= ((aluminiumCost.get()+crystalCost.get()+addsCost.get())*2+other);
-                    //Actualizar la ui en el hilo principal
-                    new Handler(Looper.getMainLooper()).post(()->{
-                        //Asignar resultado al ui
-                        binding.tvResult.setText("Resultado: "+Math.round(totalCost)+"\nCosto Mercado: "+Math.round(costoMercado));
-                    });
-
-                } catch (Exception e){
-                    new Handler(Looper.getMainLooper()).post(()->{
-                        binding.tvResult.setText(e.toString());
-
-                    });
-                    e.printStackTrace();
-                }
-            }).start();
+            handleCalculationAndSave();
         });
+
         return root;
+    }
+
+    private void handleCalculationAndSave() {
+        final Context context = getContext();
+        if (context == null) return;
+
+        // Get values from UI
+        float width = Float.parseFloat(getArguments().getString("valueW", "0"));
+        float height = Float.parseFloat(getArguments().getString("valueH", "0"));
+        String alumColor = binding.spinner.getSelectedItem().toString();
+        String crysType = binding.spinner2.getSelectedItem().toString();
+        boolean install = binding.cbInstall.isChecked();
+        boolean freight = binding.cbFreight.isChecked();
+        float freightAmount = 0;
+        if (freight && !binding.etFreightAmount.getText().toString().isEmpty()) {
+            freightAmount = Float.parseFloat(binding.etFreightAmount.getText().toString());
+        }
+
+        final float finalFreightAmount = freightAmount;
+
+        new Thread(() -> {
+            Aluminium aluminium = new Aluminium();
+            Crystal crystal = new Crystal();
+            WinAdds winadds = new WinAdds();
+            AppDatabase db = AppDatabase.getInstance(context.getApplicationContext());
+
+            try {
+                Future<Float> aluminiumCostF = aluminium.getAlumCost(width, height, alumColor, "20", context);
+                Future<Float> crystalCostF = crystal.getCrystalCost(width, height, crysType, context);
+                Future<Float> addsCostF = winadds.getAddsCost(width, height, context);
+
+                float costekmflete = Float.parseFloat(db.daoData().getOneDataValue("costokmflete").get(0).toString());
+                float other = (install ? 5000 : 0) + (freight ? finalFreightAmount * costekmflete : 0);
+
+                float totalCost = ((aluminiumCostF.get() + crystalCostF.get() + addsCostF.get()) * 2) + other;
+                int finalPrice = Math.round(totalCost);
+
+                // Calculate market cost in background thread BEFORE posting to UI thread
+                float preciomercadom2 = Float.parseFloat(db.daoData().getOneDataValue("preciomercadom2").get(0).toString());
+                float costoMercado = (preciomercadom2 * (width / 100) * (height / 100)) + other;
+                int finalCostoMercado = Math.round(costoMercado);
+
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (projectId != -1) {
+                        // --- SAVE MODE ---
+                        Ventana newVentana = new Ventana(projectId, String.valueOf(height), String.valueOf(width), "Linea 20", alumColor, crysType, String.valueOf(finalPrice));
+                        ventanaViewModel.insert(newVentana);
+                        Toast.makeText(context, "Ventana guardada en el proyecto", Toast.LENGTH_SHORT).show();
+                        NavHostFragment.findNavController(L20Fragment.this).popBackStack(R.id.nav_project_data, false);
+                    } else {
+                        // --- QUOTE MODE ---
+                        binding.tvResult.setText("Resultado: " + finalPrice + "\nCosto Mercado: " + finalCostoMercado);
+                    }
+                });
+
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    binding.tvResult.setText(e.toString());
+                });
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @Override

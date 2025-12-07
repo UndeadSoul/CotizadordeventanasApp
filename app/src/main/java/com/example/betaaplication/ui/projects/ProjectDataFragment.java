@@ -1,22 +1,48 @@
 package com.example.betaaplication.ui.projects;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.betaaplication.FormatUtils;
+import com.example.betaaplication.Project;
 import com.example.betaaplication.R;
+import com.example.betaaplication.Ventana;
+import com.example.betaaplication.ui.windows.VentanaAdapter;
+import com.example.betaaplication.ui.windows.VentanaViewModel;
 
-public class ProjectDataFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
+public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVentanaClickListener {
+
+    private int currentProjectId = -1;
+    private Project currentProject;
+    private List<Ventana> currentWindows = new ArrayList<>();
     private ProjectViewModel projectViewModel;
-    private TextView clientNameTextView, startDateTextView, statusTextView, addressTextView, addedValueTextView, notesTextView;
+    private VentanaViewModel ventanaViewModel;
+
+    private EditText otherWindowsValueEditText;
+    private TextView totalProjectTextView, balanceTextView;
+
 
     @Nullable
     @Override
@@ -24,31 +50,147 @@ public class ProjectDataFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_project_data, container, false);
 
         // Initialize Views
-        clientNameTextView = root.findViewById(R.id.text_project_client_name);
-        startDateTextView = root.findViewById(R.id.text_project_start_date);
-        statusTextView = root.findViewById(R.id.text_project_status);
-        addressTextView = root.findViewById(R.id.text_project_address);
-        addedValueTextView = root.findViewById(R.id.text_project_added_value);
-        notesTextView = root.findViewById(R.id.text_project_notes);
+        TextView clientName = root.findViewById(R.id.value_project_client_name);
+        Spinner projectStatusSpinner = root.findViewById(R.id.spinner_edit_project_status);
+        Spinner paymentStatusSpinner = root.findViewById(R.id.spinner_edit_payment_status);
+        otherWindowsValueEditText = root.findViewById(R.id.edit_text_other_windows_value);
+        EditText otherWindows = root.findViewById(R.id.edit_text_other_windows);
+        totalProjectTextView = root.findViewById(R.id.value_total_project);
+        balanceTextView = root.findViewById(R.id.value_balance);
+        TextView depositTextView = root.findViewById(R.id.value_deposit);
+        Button saveButton = root.findViewById(R.id.button_save_project_changes);
+        ImageButton addWindowButton = root.findViewById(R.id.button_add_window);
 
-        // Initialize ViewModel
+        // Setup Adapters
+        VentanaAdapter ventanaAdapter = new VentanaAdapter(this);
+        RecyclerView windowsRecyclerView = root.findViewById(R.id.recycler_view_project_windows);
+        windowsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        windowsRecyclerView.setAdapter(ventanaAdapter);
+
+        setupSpinners(projectStatusSpinner, paymentStatusSpinner);
+
+        // Initialize ViewModels
         projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
+        ventanaViewModel = new ViewModelProvider(this).get(VentanaViewModel.class);
 
-        // Get project ID from arguments and observe data
+        // Get project ID from arguments
         if (getArguments() != null) {
-            int projectId = getArguments().getInt("projectId");
-            projectViewModel.getProjectDetailsById(projectId).observe(getViewLifecycleOwner(), projectDetails -> {
+            currentProjectId = getArguments().getInt("projectId");
+        }
+
+        if (currentProjectId != -1) {
+            // Observe Project Details
+            projectViewModel.getProjectDetailsById(currentProjectId).observe(getViewLifecycleOwner(), projectDetails -> {
                 if (projectDetails != null) {
-                    clientNameTextView.setText(projectDetails.clientName);
-                    startDateTextView.setText(projectDetails.startDate);
-                    statusTextView.setText(projectDetails.status);
-                    addressTextView.setText(projectDetails.deliveryAddress);
-                    addedValueTextView.setText(projectDetails.addedValue);
-                    notesTextView.setText(projectDetails.notes);
+                    clientName.setText(projectDetails.clientName);
+                    setSpinnerToValue(projectStatusSpinner, projectDetails.projectStatus);
+                    setSpinnerToValue(paymentStatusSpinner, projectDetails.paymentStatus);
+                    otherWindowsValueEditText.setText(projectDetails.otherWindowsValue);
+                    otherWindows.setText(projectDetails.otherWindows);
+                    depositTextView.setText(FormatUtils.formatCurrency(projectDetails.deposit));
+
+                    currentProject = new Project(projectDetails.clientId, projectDetails.deliveryAddress, projectDetails.startDate, projectDetails.projectStatus, projectDetails.paymentStatus, projectDetails.deposit, projectDetails.otherWindows, projectDetails.otherWindowsValue);
+                    currentProject.setId(projectDetails.id);
+                    updateTotals(); // Update totals when project details are loaded
                 }
+            });
+
+            // Observe Windows to calculate totals
+            ventanaViewModel.getWindowsForProject(currentProjectId).observe(getViewLifecycleOwner(), ventanas -> {
+                currentWindows = ventanas;
+                ventanaAdapter.setVentanas(ventanas);
+                updateTotals(); // Update totals when window list changes
             });
         }
 
+        // Listeners
+        addWindowButton.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("projectId", currentProjectId);
+            Navigation.findNavController(v).navigate(R.id.action_project_data_to_quote, bundle);
+        });
+
+        saveButton.setOnClickListener(v -> {
+            if (currentProject != null) {
+                currentProject.setProjectStatus(projectStatusSpinner.getSelectedItem().toString());
+                currentProject.setPaymentStatus(paymentStatusSpinner.getSelectedItem().toString());
+                currentProject.setOtherWindowsValue(otherWindowsValueEditText.getText().toString());
+                currentProject.setOtherWindows(otherWindows.getText().toString());
+
+                projectViewModel.update(currentProject);
+                Toast.makeText(getContext(), "Cambios guardados", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add listener to recalculate total when otherWindowsValue changes
+        otherWindowsValueEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateTotals();
+            }
+        });
+
         return root;
+    }
+
+    private void updateTotals(){
+        double windowsTotal = 0;
+        for (Ventana v : currentWindows) {
+            try {
+                windowsTotal += Double.parseDouble(v.getPrice());
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        double otherValue = 0;
+        if (!otherWindowsValueEditText.getText().toString().isEmpty()) {
+            try {
+                otherValue = Double.parseDouble(otherWindowsValueEditText.getText().toString());
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        double total = windowsTotal + otherValue;
+        totalProjectTextView.setText(FormatUtils.formatCurrency(total));
+
+        double depositAmount = 0;
+        if (currentProject != null && currentProject.getDeposit() != null && !currentProject.getDeposit().isEmpty()) {
+            try {
+                depositAmount = Double.parseDouble(currentProject.getDeposit());
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        double balanceAmount = total - depositAmount;
+        balanceTextView.setText(FormatUtils.formatCurrency(balanceAmount));
+    }
+
+    private void setupSpinners(Spinner projectStatusSpinner, Spinner paymentStatusSpinner) {
+        if(getContext() == null) return;
+        ArrayAdapter<String> projectAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, new String[]{"En espera de confirmación", "En fabricación", "Entregado"});
+        projectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        projectStatusSpinner.setAdapter(projectAdapter);
+
+        ArrayAdapter<String> paymentAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, new String[]{"Abonado", "Pagado"});
+        paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        paymentStatusSpinner.setAdapter(paymentAdapter);
+    }
+
+    private void setSpinnerToValue(Spinner spinner, String value) {
+        ArrayAdapter adapter = (ArrayAdapter) spinner.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (adapter.getItem(i).toString().equals(value)) {
+                spinner.setSelection(i);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onVentanaClick(Ventana ventana) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("windowId", ventana.getId());
+        Navigation.findNavController(requireView()).navigate(R.id.action_project_data_to_window_data, bundle);
     }
 }
