@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        tools:context=".ui.windows.WindowDataFragment">
+
+        <TextView
+            android:id="@+id/text_window_data_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalles de la Ventana"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Window Details -->
+        <TextView
+            android:id="@+id/label_window_dimensions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Dimensiones:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_window_data_title" />
+
+        <TextView
+            android:id="@+id/value_window_dimensions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            tools:text="120cm x 150cm"
+            app:layout_constraintStart_toEndOf="@+id/label_window_dimensions"
+            app:layout_constraintTop_toTopOf="@+id/label_window_dimensions"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/label_window_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Tipo:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/value_window_dimensions" />
+
+        <TextView
+            android:id="@+id/value_window_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            tools:text="Corredera Linea 20"
+            app:layout_constraintStart_toEndOf="@+id/label_window_type"
+            app:layout_constraintTop_toTopOf="@+id/label_window_type"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/label_window_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Precio Unitario:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/value_window_type" />
+
+        <TextView
+            android:id="@+id/value_window_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            tools:text="$150.000"
+            app:layout_constraintStart_toEndOf="@+id/label_window_price"
+            app:layout_constraintTop_toTopOf="@+id/label_window_price"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Checkboxes -->
+        <CheckBox
+            android:id="@+id/checkbox_material_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Material Cortado"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/value_window_price" />
+
+        <CheckBox
+            android:id="@+id/checkbox_glass_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vidrio Cortado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox_material_cut" />
+
+        <!-- Cutting Sheet -->
+        <TextView
+            android:id="@+id/label_cutting_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoja de Corte"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox_glass_cut" />
+
+        <TextView
+            android:id="@+id/value_cutting_sheet_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Aquí se mostrarán las dimensiones de corte..."
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_cutting_sheet"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
