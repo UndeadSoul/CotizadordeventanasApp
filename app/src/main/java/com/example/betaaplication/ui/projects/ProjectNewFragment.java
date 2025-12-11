@@ -20,20 +20,19 @@ import androidx.navigation.Navigation;
 
 import com.example.betaaplication.Client;
 import com.example.betaaplication.Project;
+import com.example.betaaplication.ProjectRepository;
 import com.example.betaaplication.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class ProjectNewFragment extends Fragment {
 
     private ProjectViewModel projectViewModel;
-    private Spinner clientSpinner, projectStatusSpinner, paymentStatusSpinner;
-    private EditText deliveryAddressEditText, startDateEditText, depositEditText, otherWindowsValueEditText, otherWindowsEditText;
+    private Spinner clientSpinner;
+    // private Spinner projectStatusSpinner, paymentStatusSpinner;
+    private EditText deliveryAddressEditText;
+    // private EditText startDateEditText, depositEditText, otherWindowsValueEditText, otherWindowsEditText;
     private List<Client> clientList = new ArrayList<>();
 
     @Nullable
@@ -45,12 +44,12 @@ public class ProjectNewFragment extends Fragment {
         clientSpinner = root.findViewById(R.id.spinner_client);
         ImageButton addClientButton = root.findViewById(R.id.button_add_client);
         deliveryAddressEditText = root.findViewById(R.id.edit_text_delivery_address);
-        startDateEditText = root.findViewById(R.id.edit_text_start_date);
-        projectStatusSpinner = root.findViewById(R.id.spinner_project_status);
-        paymentStatusSpinner = root.findViewById(R.id.spinner_payment_status);
-        depositEditText = root.findViewById(R.id.edit_text_deposit);
-        otherWindowsValueEditText = root.findViewById(R.id.edit_text_other_windows_value);
-        otherWindowsEditText = root.findViewById(R.id.edit_text_other_windows);
+        // startDateEditText = root.findViewById(R.id.edit_text_start_date);
+        // projectStatusSpinner = root.findViewById(R.id.spinner_project_status);
+        // paymentStatusSpinner = root.findViewById(R.id.spinner_payment_status);
+        // depositEditText = root.findViewById(R.id.edit_text_deposit);
+        // otherWindowsValueEditText = root.findViewById(R.id.edit_text_other_windows_value);
+        // otherWindowsEditText = root.findViewById(R.id.edit_text_other_windows);
         Button saveButton = root.findViewById(R.id.button_save_project);
 
         // Initialize ViewModel
@@ -58,8 +57,8 @@ public class ProjectNewFragment extends Fragment {
 
         // Setup UI components
         setupClientSpinner();
-        setupStatusSpinners();
-        setDefaultDate();
+        // setupStatusSpinners();
+        // setDefaultDate();
 
         // Button Listeners
         saveButton.setOnClickListener(v -> saveProject());
@@ -87,6 +86,7 @@ public class ProjectNewFragment extends Fragment {
         });
     }
 
+    /*
     private void setupStatusSpinners() {
         // Project Status Spinner
         String[] projectStatusOptions = {"En espera de confirmación", "En fabricación", "Entregado"};
@@ -100,11 +100,14 @@ public class ProjectNewFragment extends Fragment {
         paymentStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paymentStatusSpinner.setAdapter(paymentStatusAdapter);
     }
+    */
 
+    /*
     private void setDefaultDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         startDateEditText.setText(sdf.format(new Date()));
     }
+    */
 
     private void saveProject() {
         // Client Validation
@@ -117,40 +120,25 @@ public class ProjectNewFragment extends Fragment {
 
         // Get data from fields
         String deliveryAddress = deliveryAddressEditText.getText().toString().trim();
-        String startDate = startDateEditText.getText().toString().trim();
-        String projectStatus = projectStatusSpinner.getSelectedItem().toString();
-        String paymentStatus = paymentStatusSpinner.getSelectedItem().toString();
-        String deposit = depositEditText.getText().toString().trim();
-        String otherWindows = otherWindowsEditText.getText().toString().trim();
-        String otherWindowsValue = otherWindowsValueEditText.getText().toString().trim();
 
         // Field Validation
-        if (TextUtils.isEmpty(deliveryAddress) || TextUtils.isEmpty(startDate)) {
-            Toast.makeText(getContext(), "La dirección y la fecha no pueden estar vacías", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!isValidDate(startDate)) {
-            Toast.makeText(getContext(), "Formato de fecha inválido. Use dd/MM/yyyy", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(deliveryAddress)) {
+            Toast.makeText(getContext(), "La dirección no puede estar vacía", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Create and insert project
-        Project newProject = new Project(selectedClient.getId(), deliveryAddress, startDate, projectStatus, paymentStatus, deposit, otherWindows, otherWindowsValue);
-        projectViewModel.insert(newProject);
+        Project newProject = new Project(selectedClient.getId(), deliveryAddress);
 
-        // Navigate back
-        getParentFragmentManager().popBackStack();
-    }
-
-    private boolean isValidDate(String dateStr) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        sdf.setLenient(false);
-        try {
-            sdf.parse(dateStr);
-        } catch (ParseException e) {
-            return false;
-        }
-        return true;
+        projectViewModel.insert(newProject, projectId -> {
+            if (getActivity() != null) {
+                requireActivity().runOnUiThread(() -> {
+                    // Navigate to the new edit screen
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("projectId", projectId);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_project_new_to_project_new_edit, bundle);
+                });
+            }
+        });
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
@@ -29,14 +30,15 @@ import java.util.concurrent.Future;
 public class L20Fragment extends Fragment {
 
     private FragmentL20Binding binding;
-    private int projectId = -1;
+    private long projectId = -1L; // Use long for projectId
     private VentanaViewModel ventanaViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectId = getArguments().getInt("projectId", -1);
+            // Correctly get projectId as a long
+            projectId = getArguments().getLong("projectId", -1L);
         }
     }
 
@@ -54,7 +56,7 @@ public class L20Fragment extends Fragment {
         binding.tvHeight.setText(valueH + " cm");
 
         // Change button text if in project mode
-        if (projectId != -1) {
+        if (projectId != -1L) {
             binding.btCalc.setText("Guardar Ventana");
         }
 
@@ -106,12 +108,16 @@ public class L20Fragment extends Fragment {
                 int finalCostoMercado = Math.round(costoMercado);
 
                 new Handler(Looper.getMainLooper()).post(() -> {
-                    if (projectId != -1) {
+                    if (projectId != -1L) {
                         // --- SAVE MODE ---
                         Ventana newVentana = new Ventana(projectId, String.valueOf(height), String.valueOf(width), "Linea 20", alumColor, crysType, String.valueOf(finalPrice));
                         ventanaViewModel.insert(newVentana);
                         Toast.makeText(context, "Ventana guardada en el proyecto", Toast.LENGTH_SHORT).show();
-                        NavHostFragment.findNavController(L20Fragment.this).popBackStack(R.id.nav_project_data, false);
+                        
+                        // Navigate back twice to return to the project screen
+                        NavController navController = NavHostFragment.findNavController(L20Fragment.this);
+                        navController.popBackStack(); // Pops L20Fragment
+                        navController.popBackStack(); // Pops QuoteFragment, returning to the project screen
                     } else {
                         // --- QUOTE MODE ---
                         binding.tvResult.setText("Resultado: " + finalPrice + "\nCosto Mercado: " + finalCostoMercado);

@@ -19,7 +19,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     private OnProjectClickListener onProjectClickListener;
 
     public interface OnProjectClickListener {
-        void onProjectClick(int projectId);
+        void onProjectClick(long projectId); // Changed to long
     }
 
     public ProjectsAdapter(OnProjectClickListener onProjectClickListener) {

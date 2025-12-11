@@ -18,7 +18,7 @@ public interface VentanaDao {
     void update(Ventana ventana);
 
     @Query("SELECT * FROM windows_table WHERE projectId = :projectId ORDER BY id ASC")
-    LiveData<List<Ventana>> getWindowsForProject(int projectId);
+    LiveData<List<Ventana>> getWindowsForProject(long projectId);
 
     @Query("SELECT * FROM windows_table WHERE id = :windowId")
     LiveData<Ventana> getWindowById(int windowId);

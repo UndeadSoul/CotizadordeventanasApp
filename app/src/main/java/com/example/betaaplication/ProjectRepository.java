@@ -10,6 +10,10 @@ public class ProjectRepository {
     private LiveData<List<Project>> allProjects;
     private LiveData<List<ProjectListItem>> projectListItems;
 
+    public interface InsertProjectCallback {
+        void onProjectInserted(long projectId);
+    }
+
     public ProjectRepository(Application application) {
         AppDatabase db = AppDatabase.getInstance(application);
         projectDao = db.projectDao();
@@ -25,7 +29,7 @@ public class ProjectRepository {
         return projectDao.getClientProjectListItems(clientId);
     }
 
-    public LiveData<ProjectDetails> getProjectDetailsById(int projectId) {
+    public LiveData<ProjectDetails> getProjectDetailsById(long projectId) {
         return projectDao.getProjectDetailsById(projectId);
     }
 
@@ -37,9 +41,10 @@ public class ProjectRepository {
         return projectDao.getProjectsForClient(clientId);
     }
 
-    public void insert(Project project) {
+    public void insert(Project project, InsertProjectCallback callback) {
         new Thread(() -> {
-            projectDao.insert(project);
+            long projectId = projectDao.insert(project);
+            callback.onProjectInserted(projectId);
         }).start();
     }
 

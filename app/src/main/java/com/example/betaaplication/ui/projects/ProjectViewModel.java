@@ -39,7 +39,7 @@ public class ProjectViewModel extends AndroidViewModel {
         return projectRepository.getClientProjectListItems(clientId);
     }
 
-    public LiveData<ProjectDetails> getProjectDetailsById(int projectId) {
+    public LiveData<ProjectDetails> getProjectDetailsById(long projectId) {
         return projectRepository.getProjectDetailsById(projectId);
     }
 
@@ -51,8 +51,8 @@ public class ProjectViewModel extends AndroidViewModel {
         return allClients;
     }
 
-    public void insert(Project project) {
-        projectRepository.insert(project);
+    public void insert(Project project, ProjectRepository.InsertProjectCallback callback) {
+        projectRepository.insert(project, callback);
     }
 
     public void update(Project project) {

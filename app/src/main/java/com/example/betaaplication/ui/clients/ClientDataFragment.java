@@ -64,9 +64,9 @@ public class ClientDataFragment extends Fragment implements ClientProjectsAdapte
     }
 
     @Override
-    public void onProjectClick(int projectId) {
+    public void onProjectClick(long projectId) { // Changed to long
         Bundle bundle = new Bundle();
-        bundle.putInt("projectId", projectId);
+        bundle.putLong("projectId", projectId); // Changed to putLong
         Navigation.findNavController(requireView()).navigate(R.id.action_client_data_to_project_data, bundle);
     }
 }

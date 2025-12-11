@@ -16,7 +16,7 @@ public class Ventana {
     private int id;
 
     @ColumnInfo(index = true)
-    private int projectId;
+    private long projectId;
 
     private String height;
     private String width;
@@ -28,7 +28,7 @@ public class Ventana {
     private boolean materialCut;
     private boolean glassCut;
 
-    public Ventana(int projectId, String height, String width, String line, String color, String crystal, String price) {
+    public Ventana(long projectId, String height, String width, String line, String color, String crystal, String price) {
         this.projectId = projectId;
         this.height = height;
         this.width = width;
@@ -50,7 +50,7 @@ public class Ventana {
         this.id = id;
     }
 
-    public int getProjectId() {
+    public long getProjectId() {
         return projectId;
     }
 

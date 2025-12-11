@@ -3,7 +3,12 @@ package com.example.betaaplication;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 @Entity(tableName = "projects_table",
         foreignKeys = @ForeignKey(entity = Client.class,
@@ -13,7 +18,7 @@ import androidx.room.PrimaryKey;
 public class Project {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo(index = true)
     private int clientId;
@@ -34,6 +39,18 @@ public class Project {
 
     // Constructor, getters, and setters
 
+    @Ignore
+    public Project(int clientId, String deliveryAddress) {
+        this(clientId,
+                deliveryAddress,
+                new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()),
+                "En espera de confirmación",
+                "Sin pagar",
+                "0",
+                "",
+                "0");
+    }
+
     public Project(int clientId, String deliveryAddress, String startDate, String projectStatus, String paymentStatus, String deposit, String otherWindows, String otherWindowsValue) {
         this.clientId = clientId;
         this.deliveryAddress = deliveryAddress;
@@ -45,11 +62,11 @@ public class Project {
         this.otherWindowsValue = otherWindowsValue;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,8 +78,16 @@ public class Project {
         return deliveryAddress;
     }
 
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
     public String getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     public String getProjectStatus() {

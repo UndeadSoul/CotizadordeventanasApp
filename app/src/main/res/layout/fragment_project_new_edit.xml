@@ -10,76 +10,90 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".ui.projects.ProjectNewFragment">
+        tools:context=".ui.projects.ProjectNewEditFragment">
 
+        <!-- Title and Save Button -->
         <TextView
             android:id="@+id/text_new_project_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Crear Proyecto"
+            android:text="Editar Proyecto"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_project"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Client -->
-        <TextView
-            android:id="@+id/label_client"
+        <Button
+            android:id="@+id/button_save_project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cliente"
+            android:text="Guardar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <!-- Client Name (Not editable) -->
+        <TextView
+            android:id="@+id/label_client_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cliente:"
             android:layout_marginTop="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_new_project_title" />
 
-        <Spinner
-            android:id="@+id/spinner_client"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_add_client"
-            app:layout_constraintTop_toBottomOf="@+id/label_client"/>
-
-        <ImageButton
-            android:id="@+id/button_add_client"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@android:drawable/ic_input_add"
-            android:contentDescription="Crear nuevo cliente"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/spinner_client"
-            app:layout_constraintBottom_toBottomOf="@+id/spinner_client"/>
+        <TextView
+            android:id="@+id/text_client_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/label_client_name"
+            app:layout_constraintTop_toTopOf="@+id/label_client_name"
+            app:layout_constraintBottom_toBottomOf="@id/label_client_name"
+            tools:text="Nombre del Cliente" />
 
         <!-- Delivery Address -->
+        <TextView
+            android:id="@+id/label_delivery_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dirección de Entrega"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/label_client_name" />
+
         <EditText
             android:id="@+id/edit_text_delivery_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Dirección de Entrega"
             android:inputType="textPostalAddress"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_client" />
+            app:layout_constraintTop_toBottomOf="@+id/label_delivery_address" />
 
         <!-- Start Date -->
-        <!--
+        <TextView
+            android:id="@+id/label_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha de Inicio"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_delivery_address" />
+
         <EditText
             android:id="@+id/edit_text_start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Fecha de Inicio (dd/mm/aaaa)"
             android:inputType="date"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_delivery_address" />
-        -->
+            app:layout_constraintTop_toBottomOf="@+id/label_start_date" />
 
         <!-- Project Status -->
-        <!--
         <TextView
             android:id="@+id/label_project_status"
             android:layout_width="wrap_content"
@@ -96,10 +110,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_project_status" />
-        -->
 
         <!-- Payment Status -->
-        <!--
         <TextView
             android:id="@+id/label_payment_status"
             android:layout_width="wrap_content"
@@ -116,24 +128,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/label_payment_status" />
-        -->
 
         <!-- Deposit -->
-        <!--
+        <TextView
+            android:id="@+id/label_deposit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Abono"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_payment_status" />
+
         <EditText
             android:id="@+id/edit_text_deposit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Abono"
             android:inputType="numberDecimal"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_payment_status" />
-        -->
+            app:layout_constraintTop_toBottomOf="@+id/label_deposit" />
 
         <!-- Windows List -->
-        <!--
         <TextView
             android:id="@+id/label_windows_list"
             android:layout_width="wrap_content"
@@ -145,34 +161,59 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_deposit" />
 
+        <ImageButton
+            android:id="@+id/button_add_window"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="Añadir ventana"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label_windows_list"
+            app:layout_constraintBottom_toBottomOf="@+id/label_windows_list"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_windows"
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content" 
             android:layout_marginTop="8dp"
             android:background="@drawable/list_border"
             android:padding="8dp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@+id/label_windows_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        -->
 
         <!-- Other Windows Value -->
-        <!--
+        <TextView
+            android:id="@+id/label_other_windows_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor Otras Ventanas"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_view_windows" />
+
         <EditText
             android:id="@+id/edit_text_other_windows_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Valor Otras Ventanas"
             android:inputType="numberDecimal"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_windows" />
-        -->
+            app:layout_constraintTop_toBottomOf="@+id/label_other_windows_value" />
 
         <!-- Other Windows -->
-        <!--
+        <TextView
+            android:id="@+id/label_other_windows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otras Ventanas"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
+
         <EditText
             android:id="@+id/edit_text_other_windows"
             android:layout_width="0dp"
@@ -180,22 +221,9 @@
             android:hint="Otras Ventanas"
             android:inputType="textMultiLine"
             android:gravity="top"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
-        -->
-
-        <Button
-            android:id="@+id/button_save_project"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_delivery_address"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/label_other_windows" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -13,12 +13,8 @@ public class VentanaRepository {
         ventanaDao = db.ventanaDao();
     }
 
-    public LiveData<List<Ventana>> getWindowsForProject(int projectId) {
+    public LiveData<List<Ventana>> getWindowsForProject(long projectId) {
         return ventanaDao.getWindowsForProject(projectId);
-    }
-
-    public LiveData<Ventana> getWindowById(int windowId) {
-        return ventanaDao.getWindowById(windowId);
     }
 
     public void insert(Ventana ventana) {
@@ -31,5 +27,9 @@ public class VentanaRepository {
         new Thread(() -> {
             ventanaDao.update(ventana);
         }).start();
+    }
+
+    public LiveData<Ventana> getWindowById(int windowId) {
+        return ventanaDao.getWindowById(windowId);
     }
 }

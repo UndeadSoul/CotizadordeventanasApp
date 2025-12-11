@@ -46,9 +46,9 @@ public class ProjectsFragment extends Fragment implements ProjectsAdapter.OnProj
     }
 
     @Override
-    public void onProjectClick(int projectId) {
+    public void onProjectClick(long projectId) { // Changed to long
         Bundle bundle = new Bundle();
-        bundle.putInt("projectId", projectId);
+        bundle.putLong("projectId", projectId); // Changed to putLong
         Navigation.findNavController(requireView()).navigate(R.id.action_projects_to_project_data, bundle);
     }
 }

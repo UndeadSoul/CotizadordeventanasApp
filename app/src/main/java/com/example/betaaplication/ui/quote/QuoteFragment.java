@@ -17,7 +17,7 @@ import com.example.betaaplication.databinding.FragmentQuoteBinding;
 public class QuoteFragment extends Fragment {
 
     private FragmentQuoteBinding binding;
-    private int projectId = -1; // Default to -1 (not in project mode)
+    private long projectId = -1L; // Default to -1 (not in project mode)
 
     // Constants for business logic
     private static final float ALTURA_LIMITE_L20_CM = 150.0f;
@@ -27,7 +27,8 @@ public class QuoteFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            projectId = getArguments().getInt("projectId", -1);
+            // Correctly get the projectId as a long
+            projectId = getArguments().getLong("projectId", -1L);
         }
     }
 
@@ -52,11 +53,12 @@ public class QuoteFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("valueH", inputValueH);
                     bundle.putString("valueW", inputValueW);
-                    bundle.putInt("projectId", projectId); // Pass the projectId to the next fragment
+                    // Correctly pass the projectId as a long
+                    bundle.putLong("projectId", projectId); 
 
                     if (valueH < ALTURA_LIMITE_L20_CM){
                         NavHostFragment.findNavController(this).navigate(R.id.action_quoteFragment_to_newFragment20, bundle);
-                    } else if (projectId != -1) {
+                    } else if (projectId != -1L) {
                         // Block navigation to L25 if in 'add to project' mode
                         Toast.makeText(getContext(), "El máximo de altura para agregar ventanas a un proyecto es 150cm.", Toast.LENGTH_LONG).show();
                     } else {

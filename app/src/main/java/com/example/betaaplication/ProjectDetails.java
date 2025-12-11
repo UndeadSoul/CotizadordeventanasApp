@@ -2,8 +2,8 @@ package com.example.betaaplication;
 
 // POJO to hold the complete details of a project, including the client's name.
 public class ProjectDetails {
-    public int id;
-    public int clientId; // Added field
+    public long id;
+    public int clientId;
     public String clientName;
     public String deliveryAddress;
     public String startDate;
@@ -13,7 +13,19 @@ public class ProjectDetails {
     public String otherWindows;
     public String otherWindowsValue;
 
-    public ProjectDetails(int id, int clientId, String clientName, String deliveryAddress, String startDate, String projectStatus, String paymentStatus, String deposit, String otherWindows, String otherWindowsValue) {
+    // Getter methods to access the fields
+    public long getId() { return id; }
+    public int getClientId() { return clientId; }
+    public String getClientName() { return clientName; }
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public String getStartDate() { return startDate; }
+    public String getProjectStatus() { return projectStatus; }
+    public String getPaymentStatus() { return paymentStatus; }
+    public String getDeposit() { return deposit; }
+    public String getOtherWindows() { return otherWindows; }
+    public String getOtherWindowsValue() { return otherWindowsValue; }
+
+    public ProjectDetails(long id, int clientId, String clientName, String deliveryAddress, String startDate, String projectStatus, String paymentStatus, String deposit, String otherWindows, String otherWindowsValue) {
         this.id = id;
         this.clientId = clientId;
         this.clientName = clientName;

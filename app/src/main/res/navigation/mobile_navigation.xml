@@ -15,7 +15,6 @@
         android:name="com.example.betaaplication.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
-        <!-- The specific action to quote has been removed, we will use the global one -->
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/nav_settings"/>
@@ -40,8 +39,8 @@
             app:destination="@id/l25" />
         <argument
             android:name="projectId"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
 
     <fragment
@@ -71,6 +70,27 @@
         <action
             android:id="@+id/action_project_new_to_client_new"
             app:destination="@id/nav_client_new" />
+        <action
+            android:id="@+id/action_project_new_to_project_new_edit"
+            app:destination="@id/nav_project_new_edit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_project_new_edit"
+        android:name="com.example.betaaplication.ui.projects.ProjectNewEditFragment"
+        android:label="Editar Proyecto"
+        tools:layout="@layout/fragment_project_new_edit">
+        <argument
+            android:name="projectId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_project_new_edit_to_quote"
+            app:destination="@id/nav_quote" />
+        <action
+            android:id="@+id/action_project_new_edit_to_project_data"
+            app:destination="@id/nav_project_data"
+            app:popUpTo="@+id/nav_project_new"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -80,7 +100,7 @@
         tools:layout="@layout/fragment_project_data">
         <argument
             android:name="projectId"
-            app:argType="integer" />
+            app:argType="long" />
         <action
             android:id="@+id/action_project_data_to_quote"
             app:destination="@id/nav_quote" />

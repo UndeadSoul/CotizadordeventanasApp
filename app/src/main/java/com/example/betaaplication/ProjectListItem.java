@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 public class ProjectListItem {
 
     @ColumnInfo(name = "projectId")
-    public int projectId;
+    public long projectId;
 
     @ColumnInfo(name = "clientName")
     public String clientName;
@@ -20,7 +20,7 @@ public class ProjectListItem {
     @ColumnInfo(name = "totalPrice")
     public double totalPrice;
 
-    public ProjectListItem(int projectId, String clientName, String startDate, String projectStatus, double totalPrice) {
+    public ProjectListItem(long projectId, String clientName, String startDate, String projectStatus, double totalPrice) {
         this.projectId = projectId;
         this.clientName = clientName;
         this.startDate = startDate;

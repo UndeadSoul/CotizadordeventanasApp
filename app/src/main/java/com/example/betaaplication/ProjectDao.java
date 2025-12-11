@@ -13,7 +13,7 @@ import java.util.List;
 public interface ProjectDao {
 
     @Insert
-    void insert(Project project);
+    long insert(Project project);
 
     @Update
     void update(Project project);
@@ -32,7 +32,7 @@ public interface ProjectDao {
 
     @Transaction
     @Query("SELECT p.id, p.clientId, c.name as clientName, p.deliveryAddress, p.startDate, p.projectStatus, p.paymentStatus, p.deposit, p.otherWindows, p.otherWindowsValue FROM projects_table p JOIN clients_table c ON p.clientId = c.id WHERE p.id = :projectId")
-    LiveData<ProjectDetails> getProjectDetailsById(int projectId);
+    LiveData<ProjectDetails> getProjectDetailsById(long projectId);
 
     @Query("SELECT * FROM projects_table ORDER BY startDate DESC")
     LiveData<List<Project>> getAllProjects();

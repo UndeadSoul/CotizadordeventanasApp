@@ -34,7 +34,7 @@ import java.util.List;
 
 public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVentanaClickListener {
 
-    private int currentProjectId = -1;
+    private long currentProjectId = -1;
     private Project currentProject;
     private List<Ventana> currentWindows = new ArrayList<>();
     private ProjectViewModel projectViewModel;
@@ -75,28 +75,31 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
 
         // Get project ID from arguments
         if (getArguments() != null) {
-            currentProjectId = getArguments().getInt("projectId");
+            currentProjectId = getArguments().getLong("projectId");
         }
 
         if (currentProjectId != -1) {
             // Observe Project Details
             projectViewModel.getProjectDetailsById(currentProjectId).observe(getViewLifecycleOwner(), projectDetails -> {
                 if (projectDetails != null) {
-                    clientName.setText(projectDetails.clientName);
-                    setSpinnerToValue(projectStatusSpinner, projectDetails.projectStatus);
-                    setSpinnerToValue(paymentStatusSpinner, projectDetails.paymentStatus);
-                    otherWindowsValueEditText.setText(projectDetails.otherWindowsValue);
-                    otherWindows.setText(projectDetails.otherWindows);
-                    depositTextView.setText(FormatUtils.formatCurrency(projectDetails.deposit));
+                    clientName.setText(projectDetails.getClientName());
+                    setSpinnerToValue(projectStatusSpinner, projectDetails.getProjectStatus());
+                    setSpinnerToValue(paymentStatusSpinner, projectDetails.getPaymentStatus());
+                    otherWindowsValueEditText.setText(projectDetails.getOtherWindowsValue());
+                    otherWindows.setText(projectDetails.getOtherWindows());
+                    depositTextView.setText(FormatUtils.formatCurrency(projectDetails.getDeposit()));
 
-                    currentProject = new Project(projectDetails.clientId, projectDetails.deliveryAddress, projectDetails.startDate, projectDetails.projectStatus, projectDetails.paymentStatus, projectDetails.deposit, projectDetails.otherWindows, projectDetails.otherWindowsValue);
-                    currentProject.setId(projectDetails.id);
+                    currentProject = new Project(projectDetails.getClientId(), projectDetails.getDeliveryAddress(), projectDetails.getStartDate(), projectDetails.getProjectStatus(), projectDetails.getPaymentStatus(), projectDetails.getDeposit(), projectDetails.getOtherWindows(), projectDetails.getOtherWindowsValue());
+                    currentProject.setId(projectDetails.getId());
                     updateTotals(); // Update totals when project details are loaded
                 }
             });
 
+            // Set the project ID in the VentanaViewModel
+            ventanaViewModel.setProjectId(currentProjectId);
+            
             // Observe Windows to calculate totals
-            ventanaViewModel.getWindowsForProject(currentProjectId).observe(getViewLifecycleOwner(), ventanas -> {
+            ventanaViewModel.getWindowsForProject().observe(getViewLifecycleOwner(), ventanas -> {
                 currentWindows = ventanas;
                 ventanaAdapter.setVentanas(ventanas);
                 updateTotals(); // Update totals when window list changes
@@ -106,7 +109,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         // Listeners
         addWindowButton.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putInt("projectId", currentProjectId);
+            bundle.putLong("projectId", currentProjectId);
             Navigation.findNavController(v).navigate(R.id.action_project_data_to_quote, bundle);
         });
 
@@ -153,7 +156,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         }
 
         double total = windowsTotal + otherValue;
-        totalProjectTextView.setText(FormatUtils.formatCurrency(total));
+        totalProjectTextView.setText(FormatUtils.formatCurrency(String.valueOf(total)));
 
         double depositAmount = 0;
         if (currentProject != null && currentProject.getDeposit() != null && !currentProject.getDeposit().isEmpty()) {
@@ -163,7 +166,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         }
 
         double balanceAmount = total - depositAmount;
-        balanceTextView.setText(FormatUtils.formatCurrency(balanceAmount));
+        balanceTextView.setText(FormatUtils.formatCurrency(String.valueOf(balanceAmount)));
     }
 
     private void setupSpinners(Spinner projectStatusSpinner, Spinner paymentStatusSpinner) {

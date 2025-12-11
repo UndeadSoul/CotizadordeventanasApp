@@ -18,6 +18,8 @@ import com.example.betaaplication.Ventana;
 
 public class WindowDataFragment extends Fragment {
 
+    private VentanaViewModel ventanaViewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,72 +34,76 @@ public class WindowDataFragment extends Fragment {
         TextView cuttingSheet = root.findViewById(R.id.value_cutting_sheet_details);
 
         // Initialize ViewModel
-        VentanaViewModel ventanaViewModel = new ViewModelProvider(this).get(VentanaViewModel.class);
+        ventanaViewModel = new ViewModelProvider(this).get(VentanaViewModel.class);
 
         // Get window ID and observe data
         if (getArguments() != null) {
-            int windowId = getArguments().getInt("windowId");
-            ventanaViewModel.getWindowById(windowId).observe(getViewLifecycleOwner(), ventana -> {
-                if (ventana != null) {
-                    // Populate basic data
-                    String dims = ventana.getWidth() + "cm x " + ventana.getHeight() + "cm";
-                    dimensions.setText(dims);
+            int windowId = getArguments().getInt("windowId", -1);
+            if (windowId != -1) {
+                ventanaViewModel.getWindowById(windowId).observe(getViewLifecycleOwner(), ventana -> {
+                    if (ventana != null) {
+                        // Populate basic data
+                        String dims = ventana.getWidth() + "cm x " + ventana.getHeight() + "cm";
+                        dimensions.setText(dims);
 
-                    String windowType = "Corredera " + ventana.getLine();
-                    type.setText(windowType);
+                        String windowType = "Corredera " + ventana.getLine();
+                        type.setText(windowType);
 
-                    // Use formatter for price
-                    price.setText(FormatUtils.formatCurrency(ventana.getPrice()));
+                        price.setText(FormatUtils.formatCurrency(ventana.getPrice()));
 
-                    // Set checkbox status and add listeners
-                    materialCut.setChecked(ventana.isMaterialCut());
-                    glassCut.setChecked(ventana.isGlassCut());
+                        // Set checkbox status and add listeners
+                        materialCut.setChecked(ventana.isMaterialCut());
+                        glassCut.setChecked(ventana.isGlassCut());
 
-                    materialCut.setOnClickListener(v -> {
-                        ventana.setMaterialCut(materialCut.isChecked());
-                        ventanaViewModel.update(ventana);
-                    });
+                        materialCut.setOnClickListener(v -> {
+                            ventana.setMaterialCut(materialCut.isChecked());
+                            ventanaViewModel.update(ventana);
+                        });
 
-                    glassCut.setOnClickListener(v -> {
-                        ventana.setGlassCut(glassCut.isChecked());
-                        ventanaViewModel.update(ventana);
-                    });
+                        glassCut.setOnClickListener(v -> {
+                            ventana.setGlassCut(glassCut.isChecked());
+                            ventanaViewModel.update(ventana);
+                        });
 
-                    // Calculate and display cutting sheet
-                    String sheet = calculateCuttingSheet(ventana);
-                    cuttingSheet.setText(sheet);
-                }
-            });
+                        // Calculate and display cutting sheet
+                        String sheet = calculateCuttingSheet(ventana);
+                        cuttingSheet.setText(sheet);
+                    }
+                });
+            }
         }
 
         return root;
     }
 
     private String calculateCuttingSheet(Ventana ventana) {
-        float width = Float.parseFloat(ventana.getWidth());
-        float height = Float.parseFloat(ventana.getHeight());
-        String line = ventana.getLine();
+        try {
+            float width = Float.parseFloat(ventana.getWidth());
+            float height = Float.parseFloat(ventana.getHeight());
+            String line = ventana.getLine();
 
-        if ("Linea 20".equals(line)) {
-            float rielSup = width;
-            float rielInf = width;
-            float zocalo = (width / 2) + 1.5f;
-            float cabezal = (width / 2) + 1.5f;
-            float batiente = height - 3.4f;
-            float traslapo = height - 3.4f;
-            float jamba = height;
+            if ("Linea 20".equals(line)) {
+                float rielSup = width;
+                float rielInf = width;
+                float zocalo = (width / 2) + 1.5f;
+                float cabezal = (width / 2) + 1.5f;
+                float batiente = height - 3.4f;
+                float traslapo = height - 3.4f;
+                float jamba = height;
 
-            // Build the string with better alignment
-            return  String.format("%-15s %s cm (1 unidad)\n", "Riel Superior:", rielSup) +
-                    String.format("%-15s %s cm (1 unidad)\n", "Riel Inferior:", rielInf) +
-                    String.format("%-15s %s cm (2 unidades)\n", "Zócalo:", zocalo) +
-                    String.format("%-15s %s cm (2 unidades)\n", "Cabezal:", cabezal) +
-                    String.format("%-15s %s cm (2 unidades)\n", "Batiente:", batiente) +
-                    String.format("%-15s %s cm (2 unidades)\n", "Traslapo:", traslapo) +
-                    String.format("%-15s %s cm (2 unidades)", "Jamba:", jamba);
+                return String.format("%-15s %s cm (1 unidad)\n", "Riel Superior:", rielSup) +
+                       String.format("%-15s %s cm (1 unidad)\n", "Riel Inferior:", rielInf) +
+                       String.format("%-15s %s cm (2 unidades)\n", "Zócalo:", zocalo) +
+                       String.format("%-15s %s cm (2 unidades)\n", "Cabezal:", cabezal) +
+                       String.format("%-15s %s cm (2 unidades)\n", "Batiente:", batiente) +
+                       String.format("%-15s %s cm (2 unidades)\n", "Traslapo:", traslapo) +
+                       String.format("%-15s %s cm (2 unidades)", "Jamba:", jamba);
 
-        } else {
-            return "Hoja de corte para esta línea no implementada.";
+            } else {
+                return "Hoja de corte para esta línea no implementada.";
+            }
+        } catch (NumberFormatException e) {
+            return "Error: Dimensiones de la ventana no válidas.";
         }
     }
 }
