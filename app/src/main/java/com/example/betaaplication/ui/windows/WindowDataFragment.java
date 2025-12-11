@@ -28,10 +28,13 @@ public class WindowDataFragment extends Fragment {
         // Initialize Views
         TextView dimensions = root.findViewById(R.id.value_window_dimensions);
         TextView type = root.findViewById(R.id.value_window_type);
+        TextView aluminumColor = root.findViewById(R.id.value_aluminum_color);
+        TextView crystalType = root.findViewById(R.id.value_crystal_type);
         TextView price = root.findViewById(R.id.value_window_price);
         CheckBox materialCut = root.findViewById(R.id.checkbox_material_cut);
         CheckBox glassCut = root.findViewById(R.id.checkbox_glass_cut);
         TextView cuttingSheet = root.findViewById(R.id.value_cutting_sheet_details);
+        TextView glassSize = root.findViewById(R.id.value_glass_size_details);
 
         // Initialize ViewModel
         ventanaViewModel = new ViewModelProvider(this).get(VentanaViewModel.class);
@@ -49,6 +52,8 @@ public class WindowDataFragment extends Fragment {
                         String windowType = "Corredera " + ventana.getLine();
                         type.setText(windowType);
 
+                        aluminumColor.setText(ventana.getColor());
+                        crystalType.setText(ventana.getCrystal());
                         price.setText(FormatUtils.formatCurrency(ventana.getPrice()));
 
                         // Set checkbox status and add listeners
@@ -65,9 +70,9 @@ public class WindowDataFragment extends Fragment {
                             ventanaViewModel.update(ventana);
                         });
 
-                        // Calculate and display cutting sheet
-                        String sheet = calculateCuttingSheet(ventana);
-                        cuttingSheet.setText(sheet);
+                        // Calculate and display cutting sheet and glass size
+                        cuttingSheet.setText(calculateCuttingSheet(ventana));
+                        glassSize.setText(calculateGlassSize(ventana));
                     }
                 });
             }
@@ -101,6 +106,25 @@ public class WindowDataFragment extends Fragment {
 
             } else {
                 return "Hoja de corte para esta línea no implementada.";
+            }
+        } catch (NumberFormatException e) {
+            return "Error: Dimensiones de la ventana no válidas.";
+        }
+    }
+
+    private String calculateGlassSize(Ventana ventana) {
+        try {
+            float width = Float.parseFloat(ventana.getWidth());
+            float height = Float.parseFloat(ventana.getHeight());
+            String line = ventana.getLine();
+
+            if ("Linea 20".equals(line)) {
+                float glassWidth = (width / 2) - 0.5f;
+                float glassHeight = height - 4.5f;
+                
+                return String.format("%.1fcm x %.1fcm (2 unidades)", glassWidth, glassHeight);
+            } else {
+                return "Cálculo de vidrio para esta línea no implementado.";
             }
         } catch (NumberFormatException e) {
             return "Error: Dimensiones de la ventana no válidas.";

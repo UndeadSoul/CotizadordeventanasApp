@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +25,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.betaaplication.FormatUtils;
 import com.example.betaaplication.Project;
+import com.example.betaaplication.ProjectDetails;
 import com.example.betaaplication.R;
 import com.example.betaaplication.Ventana;
-import com.example.betaaplication.ui.windows.VentanaAdapter;
+import com.example.betaaplication.ui.windows.VentanasAdapter;
 import com.example.betaaplication.ui.windows.VentanaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVentanaClickListener {
+public class ProjectDataFragment extends Fragment implements VentanasAdapter.OnItemClickListener {
 
     private long currentProjectId = -1;
     private Project currentProject;
@@ -42,6 +44,8 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
 
     private EditText otherWindowsValueEditText;
     private TextView totalProjectTextView, balanceTextView;
+    private TextView deliveryAddressTextView, startDateTextView;
+    private Spinner paymentStatusSpinner;
 
 
     @Nullable
@@ -51,8 +55,10 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
 
         // Initialize Views
         TextView clientName = root.findViewById(R.id.value_project_client_name);
+        deliveryAddressTextView = root.findViewById(R.id.value_delivery_address);
+        startDateTextView = root.findViewById(R.id.value_start_date);
         Spinner projectStatusSpinner = root.findViewById(R.id.spinner_edit_project_status);
-        Spinner paymentStatusSpinner = root.findViewById(R.id.spinner_edit_payment_status);
+        paymentStatusSpinner = root.findViewById(R.id.spinner_edit_payment_status);
         otherWindowsValueEditText = root.findViewById(R.id.edit_text_other_windows_value);
         EditText otherWindows = root.findViewById(R.id.edit_text_other_windows);
         totalProjectTextView = root.findViewById(R.id.value_total_project);
@@ -62,12 +68,14 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         ImageButton addWindowButton = root.findViewById(R.id.button_add_window);
 
         // Setup Adapters
-        VentanaAdapter ventanaAdapter = new VentanaAdapter(this);
+        VentanasAdapter ventanaAdapter = new VentanasAdapter();
         RecyclerView windowsRecyclerView = root.findViewById(R.id.recycler_view_project_windows);
         windowsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         windowsRecyclerView.setAdapter(ventanaAdapter);
+        ventanaAdapter.setOnItemClickListener(this);
 
         setupSpinners(projectStatusSpinner, paymentStatusSpinner);
+        setupFocusListeners();
 
         // Initialize ViewModels
         projectViewModel = new ViewModelProvider(this).get(ProjectViewModel.class);
@@ -83,6 +91,8 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
             projectViewModel.getProjectDetailsById(currentProjectId).observe(getViewLifecycleOwner(), projectDetails -> {
                 if (projectDetails != null) {
                     clientName.setText(projectDetails.getClientName());
+                    deliveryAddressTextView.setText(projectDetails.getDeliveryAddress());
+                    startDateTextView.setText(projectDetails.getStartDate());
                     setSpinnerToValue(projectStatusSpinner, projectDetails.getProjectStatus());
                     setSpinnerToValue(paymentStatusSpinner, projectDetails.getPaymentStatus());
                     otherWindowsValueEditText.setText(projectDetails.getOtherWindowsValue());
@@ -101,7 +111,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
             // Observe Windows to calculate totals
             ventanaViewModel.getWindowsForProject().observe(getViewLifecycleOwner(), ventanas -> {
                 currentWindows = ventanas;
-                ventanaAdapter.setVentanas(ventanas);
+                ventanaAdapter.submitList(ventanas);
                 updateTotals(); // Update totals when window list changes
             });
         }
@@ -140,6 +150,23 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         return root;
     }
 
+    private void setupFocusListeners() {
+        View.OnFocusChangeListener zeroingListener = (v, hasFocus) -> {
+            EditText editText = (EditText) v;
+            if (hasFocus) {
+                if ("0".equals(editText.getText().toString())) {
+                    editText.setText("");
+                }
+            } else {
+                if (editText.getText().toString().isEmpty()) {
+                    editText.setText("0");
+                }
+            }
+        };
+
+        otherWindowsValueEditText.setOnFocusChangeListener(zeroingListener);
+    }
+
     private void updateTotals(){
         double windowsTotal = 0;
         for (Ventana v : currentWindows) {
@@ -149,7 +176,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         }
 
         double otherValue = 0;
-        if (!otherWindowsValueEditText.getText().toString().isEmpty()) {
+        if (otherWindowsValueEditText != null && !otherWindowsValueEditText.getText().toString().isEmpty()) {
             try {
                 otherValue = Double.parseDouble(otherWindowsValueEditText.getText().toString());
             } catch (NumberFormatException e) { /* ignore */ }
@@ -165,7 +192,14 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
             } catch (NumberFormatException e) { /* ignore */ }
         }
 
-        double balanceAmount = total - depositAmount;
+        double balanceAmount;
+        String paymentStatus = paymentStatusSpinner.getSelectedItem().toString();
+        if ("Pagado".equals(paymentStatus)) {
+            balanceAmount = 0;
+        } else {
+            balanceAmount = total - depositAmount;
+        }
+        
         balanceTextView.setText(FormatUtils.formatCurrency(String.valueOf(balanceAmount)));
     }
 
@@ -175,9 +209,40 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
         projectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         projectStatusSpinner.setAdapter(projectAdapter);
 
-        ArrayAdapter<String> paymentAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, new String[]{"Abonado", "Pagado"});
+        final ArrayAdapter<String> paymentAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, new String[]{"Sin pagar", "Abonado", "Pagado"});
         paymentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paymentStatusSpinner.setAdapter(paymentAdapter);
+
+        paymentStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private String previousState = "";
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedStatus = parent.getItemAtPosition(position).toString();
+                
+                if ("Sin pagar".equals(selectedStatus)) {
+                    double depositAmount = 0;
+                    if (currentProject != null && currentProject.getDeposit() != null && !currentProject.getDeposit().isEmpty()) {
+                        try {
+                            depositAmount = Double.parseDouble(currentProject.getDeposit());
+                        } catch (NumberFormatException e) { /* ignore */ }
+                    }
+
+                    if (depositAmount > 0) {
+                        Toast.makeText(getContext(), "No se puede seleccionar 'Sin pagar' si ya existe un abono.", Toast.LENGTH_SHORT).show();
+                        int lastValidPosition = paymentAdapter.getPosition(previousState);
+                        paymentStatusSpinner.setSelection(lastValidPosition > -1 ? lastValidPosition : 0);
+                        return;
+                    }
+                }
+                previousState = selectedStatus;
+                updateTotals();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void setSpinnerToValue(Spinner spinner, String value) {
@@ -191,7 +256,7 @@ public class ProjectDataFragment extends Fragment implements VentanaAdapter.OnVe
     }
 
     @Override
-    public void onVentanaClick(Ventana ventana) {
+    public void onItemClick(Ventana ventana) {
         Bundle bundle = new Bundle();
         bundle.putInt("windowId", ventana.getId());
         Navigation.findNavController(requireView()).navigate(R.id.action_project_data_to_window_data, bundle);

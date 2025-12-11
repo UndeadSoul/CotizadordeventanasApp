@@ -1,6 +1,8 @@
 package com.example.betaaplication.ui.projects;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.betaaplication.FormatUtils;
 import com.example.betaaplication.Project;
 import com.example.betaaplication.ProjectDetails;
 import com.example.betaaplication.R;
@@ -28,14 +31,17 @@ import com.example.betaaplication.Ventana;
 import com.example.betaaplication.ui.windows.VentanaViewModel;
 import com.example.betaaplication.ui.windows.VentanasAdapter;
 
+import java.util.List;
+
 public class ProjectNewEditFragment extends Fragment {
 
     private ProjectViewModel projectViewModel;
     private VentanaViewModel ventanaViewModel;
     private long projectId;
     private Project currentProject;
+    private List<Ventana> currentWindows;
 
-    private TextView clientNameTextView;
+    private TextView clientNameTextView, totalProjectTextView, balanceTextView;
     private EditText deliveryAddressEditText, startDateEditText, depositEditText, otherWindowsValueEditText, otherWindowsEditText;
     private Spinner projectStatusSpinner, paymentStatusSpinner;
     private RecyclerView windowsRecyclerView;
@@ -57,6 +63,8 @@ public class ProjectNewEditFragment extends Fragment {
 
         setupSpinners();
         setupRecyclerView();
+        addTextWatchers();
+        setupFocusListeners();
 
         if (getArguments() != null) {
             projectId = getArguments().getLong("projectId");
@@ -65,7 +73,9 @@ public class ProjectNewEditFragment extends Fragment {
         }
 
         ventanaViewModel.getWindowsForProject().observe(getViewLifecycleOwner(), ventanas -> {
+            currentWindows = ventanas;
             ventanasAdapter.submitList(ventanas);
+            updateTotals();
         });
 
         saveButton.setOnClickListener(v -> saveProject());
@@ -90,11 +100,13 @@ public class ProjectNewEditFragment extends Fragment {
         otherWindowsEditText = root.findViewById(R.id.edit_text_other_windows);
         saveButton = root.findViewById(R.id.button_save_project);
         addWindowButton = root.findViewById(R.id.button_add_window);
+        totalProjectTextView = root.findViewById(R.id.value_total_project);
+        balanceTextView = root.findViewById(R.id.value_balance);
     }
 
     private void setupRecyclerView() {
         windowsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        windowsRecyclerView.setHasFixedSize(false); // Allow it to wrap content
+        windowsRecyclerView.setHasFixedSize(false);
         ventanasAdapter = new VentanasAdapter();
         windowsRecyclerView.setAdapter(ventanasAdapter);
 
@@ -114,17 +126,41 @@ public class ProjectNewEditFragment extends Fragment {
         paymentStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         paymentStatusSpinner.setAdapter(paymentStatusAdapter);
 
-        // Add listener to control the deposit field
         paymentStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private String previousState = "";
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedStatus = parent.getItemAtPosition(position).toString();
-                if ("Abonado".equals(selectedStatus) || "Pagado".equals(selectedStatus)) {
-                    depositEditText.setEnabled(true);
-                } else {
-                    depositEditText.setEnabled(false);
-                    depositEditText.setText("0"); // Reset to 0 when not applicable
+
+                // Prevent changing to "Sin pagar" if there is a deposit
+                if ("Sin pagar".equals(selectedStatus)) {
+                    double depositAmount = 0;
+                    try {
+                        depositAmount = Double.parseDouble(depositEditText.getText().toString());
+                    } catch (NumberFormatException e) { /* ignore */ }
+                    
+                    if (depositAmount > 0) {
+                        Toast.makeText(getContext(), "No se puede seleccionar 'Sin pagar' si ya existe un abono.", Toast.LENGTH_SHORT).show();
+                        int lastValidPosition = paymentStatusAdapter.getPosition(previousState);
+                        paymentStatusSpinner.setSelection(lastValidPosition > -1 ? lastValidPosition : 0);
+                        return;
+                    }
                 }
+
+                // Apply logic based on the new selection
+                if ("Pagado".equals(selectedStatus)) {
+                    double total = calculateTotal();
+                    depositEditText.setText(String.valueOf(Math.round(total)));
+                    depositEditText.setEnabled(false);
+                } else if ("Abonado".equals(selectedStatus)) {
+                    depositEditText.setEnabled(true);
+                } else { // Sin pagar
+                    depositEditText.setEnabled(false);
+                    depositEditText.setText("0");
+                }
+                previousState = selectedStatus;
+                updateTotals();
             }
 
             @Override
@@ -132,6 +168,39 @@ public class ProjectNewEditFragment extends Fragment {
                 depositEditText.setEnabled(false);
             }
         });
+    }
+
+    private void addTextWatchers() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                updateTotals();
+            }
+        };
+        otherWindowsValueEditText.addTextChangedListener(textWatcher);
+        depositEditText.addTextChangedListener(textWatcher);
+    }
+
+    private void setupFocusListeners() {
+        View.OnFocusChangeListener zeroingListener = (v, hasFocus) -> {
+            EditText editText = (EditText) v;
+            if (hasFocus) {
+                if ("0".equals(editText.getText().toString())) {
+                    editText.setText("");
+                }
+            } else {
+                if (editText.getText().toString().isEmpty()) {
+                    editText.setText("0");
+                }
+            }
+        };
+
+        depositEditText.setOnFocusChangeListener(zeroingListener);
+        otherWindowsValueEditText.setOnFocusChangeListener(zeroingListener);
     }
 
     private void loadProjectDetails() {
@@ -152,8 +221,45 @@ public class ProjectNewEditFragment extends Fragment {
 
                 currentProject = new Project(projectDetails.getClientId(), projectDetails.getDeliveryAddress(), projectDetails.getStartDate(), projectDetails.getProjectStatus(), projectDetails.getPaymentStatus(), projectDetails.getDeposit(), projectDetails.getOtherWindows(), projectDetails.getOtherWindowsValue());
                 currentProject.setId(projectDetails.getId());
+                
+                updateTotals();
             }
         });
+    }
+
+    private double calculateTotal() {
+        double windowsTotal = 0;
+        if (currentWindows != null) {
+            for (Ventana v : currentWindows) {
+                try {
+                    windowsTotal += Double.parseDouble(v.getPrice());
+                } catch (NumberFormatException e) { /* ignore */ }
+            }
+        }
+
+        double otherValue = 0;
+        if (otherWindowsValueEditText != null && !otherWindowsValueEditText.getText().toString().isEmpty()) {
+            try {
+                otherValue = Double.parseDouble(otherWindowsValueEditText.getText().toString());
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        return windowsTotal + otherValue;
+    }
+
+    private void updateTotals() {
+        double total = calculateTotal();
+        totalProjectTextView.setText(FormatUtils.formatCurrency(String.valueOf(total)));
+
+        double depositAmount = 0;
+        if (depositEditText != null && !depositEditText.getText().toString().isEmpty()) {
+            try {
+                depositAmount = Double.parseDouble(depositEditText.getText().toString());
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        double balanceAmount = total - depositAmount;
+        balanceTextView.setText(FormatUtils.formatCurrency(String.valueOf(balanceAmount)));
     }
 
     private void saveProject() {
@@ -174,7 +280,6 @@ public class ProjectNewEditFragment extends Fragment {
 
         Toast.makeText(getContext(), "Proyecto guardado", Toast.LENGTH_SHORT).show();
         
-        // Navigate to the project data screen
         Bundle bundle = new Bundle();
         bundle.putLong("projectId", projectId);
         Navigation.findNavController(requireView()).navigate(R.id.action_project_new_edit_to_project_data, bundle);

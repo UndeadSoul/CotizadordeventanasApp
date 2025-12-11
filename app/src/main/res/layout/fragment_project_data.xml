@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    tools:context=".ui.projects.ProjectDataFragment">
 
+    <!-- Header (Sticky Top) -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/header_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".ui.projects.ProjectDataFragment">
+        android:elevation="4dp"
+        android:background="?android:attr/colorBackground"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Title and Save Button -->
         <TextView
             android:id="@+id/text_project_data_title"
             android:layout_width="0dp"
@@ -32,135 +37,49 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <!-- Client (Not Editable) -->
         <TextView
             android:id="@+id/label_project_client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Cliente:"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_project_data_title" />
 
         <TextView
             android:id="@+id/value_project_client_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tools:text="Nombre Apellido"
+            android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/label_project_client_name"
             app:layout_constraintTop_toTopOf="@+id/label_project_client_name"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@+id/label_project_client_name"
+            tools:text="Nombre del Cliente" />
 
-        <!-- Project Status (Editable) -->
-        <TextView
-            android:id="@+id/label_project_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Estado Proyecto:"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/value_project_client_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Spinner
-            android:id="@+id/spinner_edit_project_status"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_project_status" />
+    <!-- Footer (Sticky Bottom) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:background="?android:attr/colorBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Payment Status (Editable) -->
-        <TextView
-            android:id="@+id/label_payment_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Estado Pago:"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_edit_project_status" />
-
-        <Spinner
-            android:id="@+id/spinner_edit_payment_status"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_payment_status" />
-
-        <!-- Windows List -->
-        <TextView
-            android:id="@+id/label_windows_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ventanas"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_edit_payment_status" />
-
-        <ImageButton
-            android:id="@+id/button_add_window"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@android:drawable/ic_input_add"
-            android:contentDescription="Agregar Ventana"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/label_windows_list"
-            app:layout_constraintBottom_toBottomOf="@+id/label_windows_list"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_project_windows"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/list_border"
-            android:padding="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/label_windows_list"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Other Windows Value (Editable) -->
-        <EditText
-            android:id="@+id/edit_text_other_windows_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Valor Otras Ventanas"
-            android:inputType="numberDecimal"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view_project_windows" />
-
-        <!-- Other Windows (Editable) -->
-        <EditText
-            android:id="@+id/edit_text_other_windows"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:hint="Otras Ventanas"
-            android:inputType="textMultiLine"
-            android:gravity="top"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
-
-        <!-- Totals and Deposit -->
         <TextView
             android:id="@+id/label_total_project"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text="Total Proyecto:"
             android:textStyle="bold"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/value_total_project"
-            app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/value_total_project"
@@ -214,4 +133,174 @@
             app:layout_constraintTop_toTopOf="@+id/label_balance"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintBottom_toTopOf="@id/footer_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Delivery Address (Read-Only) -->
+            <TextView
+                android:id="@+id/label_delivery_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dirección de Entrega"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/value_delivery_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="Calle Falsa 123, Springfield"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_delivery_address" />
+
+            <!-- Start Date (Read-Only) -->
+            <TextView
+                android:id="@+id/label_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fecha de Inicio"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/value_delivery_address" />
+
+            <TextView
+                android:id="@+id/value_start_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tools:text="01/01/2024"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_start_date" />
+
+
+            <!-- Project Status (Editable) -->
+            <TextView
+                android:id="@+id/label_project_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Estado Proyecto:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/value_start_date" />
+
+            <Spinner
+                android:id="@+id/spinner_edit_project_status"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_project_status" />
+
+            <!-- Payment Status (Editable) -->
+            <TextView
+                android:id="@+id/label_payment_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Estado Pago:"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_edit_project_status" />
+
+            <Spinner
+                android:id="@+id/spinner_edit_payment_status"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_payment_status" />
+
+            <!-- Windows List -->
+            <TextView
+                android:id="@+id/label_windows_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ventanas"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner_edit_payment_status" />
+
+            <ImageButton
+                android:id="@+id/button_add_window"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@android:drawable/ic_input_add"
+                android:contentDescription="Agregar Ventana"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/label_windows_list"
+                app:layout_constraintBottom_toBottomOf="@+id/label_windows_list"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_project_windows"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/list_border"
+                android:nestedScrollingEnabled="false"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/label_windows_list"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Other Windows Value (Editable) -->
+            <TextView
+                android:id="@+id/label_other_windows_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor Otras Ventanas"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view_project_windows" />
+
+            <EditText
+                android:id="@+id/edit_text_other_windows_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_other_windows_value" />
+
+            <!-- Other Windows (Editable) -->
+            <TextView
+                android:id="@+id/label_other_windows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Otras Ventanas (opcional)"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_other_windows_value" />
+
+            <EditText
+                android:id="@+id/edit_text_other_windows"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textMultiLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_other_windows" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
